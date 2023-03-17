@@ -17,13 +17,9 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [isInvalid, setIsInvalid] = useState(false);
 
-  useEffect(() => {
-    input.current.focus();
-  }, []);
-
   const validationSchema = object({
-    username: string().required(),
-    password: string().required(),
+    username: string().trim().required(),
+    password: string().trim().required(),
   });
 
   const { handleChange, handleSubmit, values } = useFormik({
@@ -43,10 +39,15 @@ const LoginPage = () => {
         navigate(from);
       } catch (error) {
         input.current.select();
+
         setIsInvalid(true);
       }
     },
   });
+
+  useEffect(() => {
+    input.current.focus();
+  }, []);
 
   return (
     <Container className='h-100' fluid>

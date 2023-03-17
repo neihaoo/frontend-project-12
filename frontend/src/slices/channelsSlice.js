@@ -1,5 +1,5 @@
+import { remove } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
-import remove from 'lodash/remove.js';
 
 export const defaultChannelId = 1;
 

@@ -12,7 +12,7 @@ import { AuthContext } from '../contexts';
 
 const AuthProvider = ({ children }) => {
   const userData = JSON.parse(localStorage.getItem('user'));
-  const [isAuthenticated, setIsAuthenticated] = useState(!!userData);
+  const [username, setUsername] = useState(userData?.username ?? null);
 
   const getAuthHeader = () => {
     const userData = JSON.parse(localStorage.getItem('user'));
@@ -22,25 +22,25 @@ const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
-    setIsAuthenticated(true);
+    setUsername(userData.username);
   };
 
   const logout = () => {
     localStorage.removeItem('user');
-    setIsAuthenticated(false);
+    setUsername(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, getAuthHeader, login, logout }}>
+    <AuthContext.Provider value={{ username, getAuthHeader, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 const PrivateOutlet = () => {
-  const { isAuthenticated } = useAuth();
+  const { username } = useAuth();
 
-  return isAuthenticated ? <Outlet /> : <Navigate to={routes.loginPagePath()} />;
+  return username ? <Outlet /> : <Navigate to={routes.loginPagePath()} />;
 };
 
 const App = () => (
