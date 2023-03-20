@@ -8,38 +8,46 @@ import { Button, Card, Form, Image, Container, Row, Col } from 'react-bootstrap'
 import routes from '../routes';
 import { useAuth } from '../hooks';
 
-import loginImage from '../assets/login.jpeg';
+import singupImage from '../assets/signup.jpg'
 
-const LoginPage = () => {
+const SignupPage = () => {
   const input = useRef();
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [isInvalid, setIsInvalid] = useState(false);
+  const [singupFailed, setSingupFailed] = useState(false);
 
   const validationSchema = object({
-    username: string().trim().required(),
-    password: string().trim().required(),
+    username: string().trim().required().min(3).max(20),
+    password: string().trim().required().min(6),
+    confirmPassword: string().test((value, context) => value === context.parent.password),
   });
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
+      confirmPassword: '',
     },
     validationSchema,
     validateOnChange: false,
-    onSubmit: async (values) => {
-      setIsInvalid(false);
+    onSubmit: async ({ username, password }) => {
+      setSingupFailed(false);
 
       try {
-        const { data } = await axios.post(routes.loginPath(), values);
+        const { data } = await axios.post(routes.signupPath(), { username, password });
 
         login(data);
         navigate(routes.chatPagePath());
       } catch (error) {
-        input.current.select();
+        if (error.response.status === 409) {
+          input.current.select();
 
-        setIsInvalid(true);
+          setSingupFailed(true);
+
+          return;
+        }
+
+        throw error;
       }
     },
   });
@@ -55,43 +63,54 @@ const LoginPage = () => {
           <Card className='shadow-sm'>
             <Card.Body className='row p-5'>
               <Col className='d-flex align-items-center justify-content-center' xs='12' md='6'>
-                <Image src={loginImage} alt='Login' roundedCircle />
+                <Image src={singupImage} alt='Singup' roundedCircle />
               </Col>
               <Form className='col-12 col-md-6 mt-3 mt-mb-0' onSubmit={formik.handleSubmit}>
-                <h1 className='text-center mb-4'>Login</h1>
+                <h1 className='text-center mb-4'>Singup</h1>
                 <Form.FloatingLabel className='mb-3' label='Username'>
                   <Form.Control
                     name='username'
                     autocomplete='username'
                     placeholder='Username'
                     value={formik.values.username}
-                    isInvalid={isInvalid}
+                    isInvalid={(formik.errors.username && formik.touched.username) || singupFailed}
                     onChange={formik.handleChange}
                     ref={input}
                     required
                   />
+                  <Form.Control.Feedback type='invalid' tooltip>{formik.errors.username}</Form.Control.Feedback>
                 </Form.FloatingLabel>
                 <Form.FloatingLabel className='mb-3' label='Password'>
                   <Form.Control
-                    name='password'
-                    autocomplete='current-password'
-                    placeholder='Password'
                     type='password'
+                    name='password'
+                    autocomplete='new-password'
+                    placeholder='Password'
                     value={formik.values.password}
-                    isInvalid={isInvalid}
+                    isInvalid={(formik.errors.password && formik.touched.password) || singupFailed}
                     onChange={formik.handleChange}
                     required
                   />
-                  {isInvalid && <Form.Control.Feedback type="invalid" tooltip>Incorrect username or password</Form.Control.Feedback>}
+                  <Form.Control.Feedback type='invalid' tooltip>{formik.errors.password}</Form.Control.Feedback>
+                </Form.FloatingLabel>
+                <Form.FloatingLabel className='mb-3' label='Confirm password'>
+                  <Form.Control
+                    type='password'
+                    name='confirmPassword'
+                    autocomplete='new-password'
+                    placeholder='Confirm password'
+                    value={formik.values.confirmPassword}
+                    isInvalid={(formik.errors.confirmPassword && formik.touched.confirmPassword) || singupFailed}
+                    onChange={formik.handleChange}
+                    required
+                  />
+                  <Form.Control.Feedback type='invalid' tooltip>
+                    {singupFailed ? 'Username already taken' : formik.errors.confirmPassword}
+                  </Form.Control.Feedback>
                 </Form.FloatingLabel>
                 <Button className='w-100 mb-3' variant='outline-primary' type='submit'>Submit</Button>
               </Form>
             </Card.Body>
-            <Card.Footer className='p-4'>
-              <div className='text-center'>
-                <span>No account?</span> <a href='/signup'>Registration</a>
-              </div>
-            </Card.Footer>
           </Card>
         </Col>
       </Row>
@@ -99,4 +118,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

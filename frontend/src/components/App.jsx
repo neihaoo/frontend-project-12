@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import ChatPage from './ChatPage';
 import LoginPage from './LoginPage';
 import ErrorPage from './ErrorPage';
+import SignupPage from './SignupPage';
 
 import routes from '../routes';
 import { useAuth } from '../hooks';
@@ -50,6 +51,7 @@ const App = () => (
         <Navbar />
         <Routes>
           <Route path={routes.loginPagePath()} element={<LoginPage />} />
+          <Route path={routes.signupPagePath()} element={<SignupPage />} />
           <Route path={routes.chatPagePath()} element={<PrivateOutlet />}>
             <Route path='' element={<ChatPage />} />
           </Route>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Button, Container, Navbar as BootstrapNavbar } from 'react-bootstrap';
 
 import routes from '../routes';
@@ -9,7 +10,7 @@ const Navbar = () => {
   return (
     <BootstrapNavbar className='shadow-sm' bg='white' expand='lg'>
       <Container>
-        <BootstrapNavbar.Brand href={routes.chatPagePath()}>Hexlet Chat</BootstrapNavbar.Brand>
+        <BootstrapNavbar.Brand as={Link} to={routes.chatPagePath()}>Hexlet Chat</BootstrapNavbar.Brand>
         {!!username && <Button variant='primary' type='button' onClick={logout}>Logout</Button>}
       </Container>
     </BootstrapNavbar>
