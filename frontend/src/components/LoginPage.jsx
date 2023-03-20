@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { string, object } from 'yup';
+import { object, string } from 'yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Card, Form, Image, Container, Row, Col } from 'react-bootstrap';
@@ -22,7 +22,7 @@ const LoginPage = () => {
     password: string().trim().required(),
   });
 
-  const { handleChange, handleSubmit, values } = useFormik({
+  const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
@@ -58,16 +58,16 @@ const LoginPage = () => {
               <Col className='d-flex align-items-center justify-content-center' xs='12' md='6'>
                 <Image src={loginImage} alt='Login' roundedCircle />
               </Col>
-              <Form className='col-12 col-md-6 mt-3 mt-mb-0' onSubmit={handleSubmit}>
+              <Form className='col-12 col-md-6 mt-3 mt-mb-0' onSubmit={formik.handleSubmit}>
                 <h1 className='text-center mb-4'>Login</h1>
                 <Form.FloatingLabel className='mb-3' label='Username'>
                   <Form.Control
                     name='username'
                     autocomplete='username'
                     placeholder='Username'
-                    value={values.username}
+                    value={formik.values.username}
                     isInvalid={isInvalid}
-                    onChange={handleChange}
+                    onChange={formik.handleChange}
                     ref={input}
                     required
                   />
@@ -78,9 +78,9 @@ const LoginPage = () => {
                     autocomplete='current-password'
                     placeholder='Password'
                     type='password'
-                    value={values.password}
+                    value={formik.values.password}
                     isInvalid={isInvalid}
-                    onChange={handleChange}
+                    onChange={formik.handleChange}
                     required
                   />
                   {isInvalid && <Form.Control.Feedback type="invalid" tooltip>Incorrect username or password</Form.Control.Feedback>}
