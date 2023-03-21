@@ -1,3 +1,4 @@
+import filter from 'leo-profanity';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
 import { toast } from 'react-toastify';
@@ -25,6 +26,7 @@ const Chat = () => {
   const { sendMessage } = useApi();
   const channel = useSelector(selectCurrentChannel);
   const messages = useSelector(selectCurrentChannelMessages);
+  const russianDictionary = filter.getDictionary('ru');
 
   const validationSchema = object({
     body: string().trim().required(),
@@ -58,9 +60,11 @@ const Chat = () => {
 
   const isInvalid = !formik.dirty || !formik.isValid;
 
+  filter.add(russianDictionary);
+
   useEffect(() => {
     input.current.focus();
-  }, [])
+  })
 
   return (
     <div className='d-flex flex-column h-100'>
@@ -74,7 +78,7 @@ const Chat = () => {
       </div>
       <div id='messages-box' className='chat-messages overflow-auto px-5'>
         {messages.map(({ id, username, body }) => (
-          <Message key={id} username={username} body={body} />
+          <Message key={id} username={username} body={filter.clean(body)} />
         ))}
       </div>
       <div className='mt-auto px-5 py-3'>
