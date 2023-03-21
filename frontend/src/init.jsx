@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import { setLocale } from 'yup';
 import { Provider } from 'react-redux';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 
 import store from './slices';
@@ -44,6 +45,13 @@ const init = async (socket) => {
     removeChannel: withAcknowledgement((...args) => socket.volatile.emit('removeChannel', ...args)),
   };
 
+  const rollbarConfig = {
+    accessToken: 'e46e969a0e934ae0918e8b867e632dea',
+    environment: 'production',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  };
+
   const i18nextInstance = i18next.createInstance();
 
   await i18nextInstance
@@ -81,13 +89,17 @@ const init = async (socket) => {
   });
 
   return (
-    <Provider store={store}>
-      <I18nextProvider i18n={i18nextInstance}>
-        <ApiContext.Provider value={api}>
-          <App />
-        </ApiContext.Provider>
-      </I18nextProvider>
-    </Provider>
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <I18nextProvider i18n={i18nextInstance}>
+            <ApiContext.Provider value={api}>
+              <App />
+            </ApiContext.Provider>
+          </I18nextProvider>
+        </Provider>
+      </ErrorBoundary>
+    </RollbarProvider>
   );
 };
 
