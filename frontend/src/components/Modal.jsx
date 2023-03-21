@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
+import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Modal as BootstrapModal } from 'react-bootstrap';
@@ -16,6 +17,7 @@ const getValidationSchema = (channels) => object({
 const AddChannelForm = ({ handleClose }) => {
   const input = useRef();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { addChannel } = useApi();
   const channels = useSelector(selectChannelsNames);
 
@@ -52,12 +54,12 @@ const AddChannelForm = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Add channel</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modals.add')}</BootstrapModal.Title>
         <Button
           variant='close'
           type='button'
           onClick={handleClose}
-          aria-label='Close'
+          aria-label={t('modals.close')}
           data-bs-dismiss='modal'
         />
       </BootstrapModal.Header>
@@ -72,9 +74,9 @@ const AddChannelForm = ({ handleClose }) => {
               value={formik.values.name}
               isInvalid={(formik.errors.name && formik.touched.name) || !!formik.status}
             />
-            <Form.Label visuallyHidden>Chanel name</Form.Label>
+            <Form.Label visuallyHidden>{t('modals.channelName')}</Form.Label>
             <Form.Control.Feedback type='invalid'>
-              {formik.errors.name || formik.status}
+              {t(formik.errors.name) || t(formik.status)}
             </Form.Control.Feedback>
             <div className='d-flex justify-content-end'>
               <Button
@@ -83,14 +85,14 @@ const AddChannelForm = ({ handleClose }) => {
                 type='button'
                 onClick={handleClose}
               >
-                Cancel
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant='primary'
                 type='submit'
                 disabled={formik.isSubmitting}
               >
-                Submit
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>
@@ -101,6 +103,7 @@ const AddChannelForm = ({ handleClose }) => {
 };
 
 const RemoveChannelForm = ({ handleClose }) => {
+  const { t } = useTranslation();
   const { removeChannel } = useApi();
   const [loading, setLoading] = useState(false);
   const { channelId } = useSelector((state) => state.modal.extra);
@@ -120,17 +123,17 @@ const RemoveChannelForm = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Remove channel</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modals.remove')}</BootstrapModal.Title>
         <Button
           variant='close'
           type='button'
           onClick={handleClose}
-          aria-label='Close'
+          aria-label={t('modals.close')}
           data-bs-dismiss='modal'
         />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
-        <p className='lead'>Are you sure?</p>
+        <p className='lead'>{t('modals.confirmation')}</p>
         <div className='d-flex justify-content-end'>
           <Button
             className='me-2'
@@ -139,7 +142,7 @@ const RemoveChannelForm = ({ handleClose }) => {
             onClick={handleClose}
             disabled={loading}
           >
-            Cancel
+            {t('modals.cancel')}
           </Button>
           <Button
             variant='danger'
@@ -147,7 +150,7 @@ const RemoveChannelForm = ({ handleClose }) => {
             onClick={handleRemove}
             disabled={loading}
           >
-            Confirm
+            {t('modals.confirm')}
           </Button>
         </div>
       </BootstrapModal.Body>
@@ -157,6 +160,7 @@ const RemoveChannelForm = ({ handleClose }) => {
 
 const RenameChannelForm = ({ handleClose }) => {
   const input = useRef();
+  const { t } = useTranslation();
   const { renameChannel } = useApi();
   const channels = useSelector(selectChannelsNames);
   const { channelId } = useSelector((state) => state.modal.extra);
@@ -196,12 +200,12 @@ const RenameChannelForm = ({ handleClose }) => {
   return (
     <>
       <BootstrapModal.Header>
-        <BootstrapModal.Title>Rename channel</BootstrapModal.Title>
+        <BootstrapModal.Title>{t('modals.rename')}</BootstrapModal.Title>
         <Button
           variant='close'
           type='button'
           onClick={handleClose}
-          aria-label='Close'
+          aria-label={t('modals.close')}
           data-bs-dismiss='modal'
         />
       </BootstrapModal.Header>
@@ -216,9 +220,9 @@ const RenameChannelForm = ({ handleClose }) => {
               value={formik.values.name}
               isInvalid={(formik.errors.name && formik.touched.name) || !!formik.status}
             />
-            <Form.Label visuallyHidden>Chanel name</Form.Label>
+            <Form.Label visuallyHidden>{t('modals.channelName')}</Form.Label>
             <Form.Control.Feedback type='invalid'>
-              {formik.errors.name || formik.status}
+              {t(formik.errors.name) || t(formik.status)}
             </Form.Control.Feedback>
             <div className='d-flex justify-content-end'>
               <Button
@@ -227,14 +231,14 @@ const RenameChannelForm = ({ handleClose }) => {
                 type='button'
                 onClick={handleClose}
               >
-                Cancel
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant='primary'
                 type='submit'
                 disabled={formik.isSubmitting}
               >
-                Submit
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>

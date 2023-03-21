@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button, Card, Form, Image, Container, Row, Col } from 'react-bootstrap';
 
 import routes from '../routes';
@@ -13,6 +14,7 @@ import loginImage from '../assets/login.jpeg';
 const LoginPage = () => {
   const input = useRef();
   const { login } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isInvalid, setIsInvalid] = useState(false);
 
@@ -55,15 +57,15 @@ const LoginPage = () => {
           <Card className='shadow-sm'>
             <Card.Body className='row p-5'>
               <Col className='d-flex align-items-center justify-content-center' xs='12' md='6'>
-                <Image src={loginImage} alt='Login' roundedCircle />
+                <Image src={loginImage} alt={t('login.title')} roundedCircle />
               </Col>
               <Form className='col-12 col-md-6 mt-3 mt-mb-0' onSubmit={formik.handleSubmit}>
-                <h1 className='text-center mb-4'>Login</h1>
-                <Form.FloatingLabel className='mb-3' label='Username'>
+                <h1 className='text-center mb-4'>{t('login.title')}</h1>
+                <Form.FloatingLabel className='mb-3' label={t('login.username')}>
                   <Form.Control
                     name='username'
                     autocomplete='username'
-                    placeholder='Username'
+                    placeholder={t('login.username')}
                     value={formik.values.username}
                     isInvalid={isInvalid}
                     onChange={formik.handleChange}
@@ -71,25 +73,27 @@ const LoginPage = () => {
                     required
                   />
                 </Form.FloatingLabel>
-                <Form.FloatingLabel className='mb-3' label='Password'>
+                <Form.FloatingLabel className='mb-3' label={t('login.password')}>
                   <Form.Control
                     name='password'
                     autocomplete='current-password'
-                    placeholder='Password'
+                    placeholder={t('login.password')}
                     type='password'
                     value={formik.values.password}
                     isInvalid={isInvalid}
                     onChange={formik.handleChange}
                     required
                   />
-                  {isInvalid && <Form.Control.Feedback type="invalid" tooltip>Incorrect username or password</Form.Control.Feedback>}
+                  {isInvalid && <Form.Control.Feedback type="invalid" tooltip>{t('login.auth')}</Form.Control.Feedback>}
                 </Form.FloatingLabel>
-                <Button className='w-100 mb-3' variant='outline-primary' type='submit'>Submit</Button>
+                <Button className='w-100 mb-3' variant='outline-primary' type='submit'>{t('login.submit')}</Button>
               </Form>
             </Card.Body>
             <Card.Footer className='p-4'>
               <div className='text-center'>
-                <span>No account?</span> <a href='/signup'>Registration</a>
+                <span>{t('login.newToChat')}</span>
+                {' '}
+                <Link to='/signup'>{t('login.signup')}</Link>
               </div>
             </Card.Footer>
           </Card>

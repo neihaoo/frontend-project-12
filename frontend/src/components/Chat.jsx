@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import { object, string } from 'yup';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { Button, InputGroup, Form } from 'react-bootstrap';
 
@@ -11,13 +12,15 @@ import { selectCurrentChannel, selectCurrentChannelMessages } from '../selectors
 const Message = ({ username, body }) => (
   <div className="text-break mb-2">
     <b>{username}</b>
-    {`: ${body}`}
+    {' '}
+    {body}
   </div>
 );
 
 const Chat = () => {
   const input = useRef();
   const { username } = useAuth();
+  const { t } = useTranslation();
   const { sendMessage } = useApi();
   const channel = useSelector(selectCurrentChannel);
   const messages = useSelector(selectCurrentChannelMessages);
@@ -41,7 +44,7 @@ const Chat = () => {
 
         resetForm();
       } catch (error) {
-        console.log(error);
+        console.log({ error });
       }
 
       setSubmitting(false);
@@ -61,7 +64,7 @@ const Chat = () => {
           <b># {channel?.name}</b>
         </p>
         <span className='text-muted'>
-          {`${messages.length} messages`}
+          {`${messages.length} ${t('chat.messageCount', { count: messages.length })}`}
         </span>
       </div>
       <div id='messages-box' className='chat-messages overflow-auto px-5'>
@@ -75,16 +78,16 @@ const Chat = () => {
             <Form.Control
               ref={input}
               name='body'
-              aria-label='New message'
+              aria-label={t('chat.newMessage')}
               value={formik.values.body}
               className='border-0 p-0 ps-2'
               disabled={formik.isSubmitting}
               onChange={formik.handleChange}
-              placeholder='Enter a message...'
+              placeholder={t('chat.enterMessage')}
             />
             <Button className='border-0' variant='group-vertical' type='submit' disabled={isInvalid}>
               <ArrowRightSquare size={20} />
-              <span className='visually-hidden'>Send</span>
+              <span className='visually-hidden'>{t('chat.send')}</span>
             </Button>
           </InputGroup>
         </Form>

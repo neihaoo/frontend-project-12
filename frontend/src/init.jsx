@@ -1,6 +1,10 @@
+import i18next from 'i18next';
+import { setLocale } from 'yup';
 import { Provider } from 'react-redux';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
 
 import store from './slices';
+import resources from './locales';
 import App from './components/App';
 import { ApiContext } from './contexts';
 import { actions as messagesActions } from './slices/messages';
@@ -40,6 +44,26 @@ const init = async (socket) => {
     removeChannel: withAcknowledgement((...args) => socket.volatile.emit('removeChannel', ...args)),
   };
 
+  const i18nextInstance = i18next.createInstance();
+
+  await i18nextInstance
+    .use(initReactI18next)
+    .init({
+      lng: 'ru',
+      resources,
+    });
+
+  setLocale({
+    mixed: {
+      notOneOf: 'modals.unique',
+      required: 'errors.required',
+    },
+    string: {
+      min: ({ min }) => ({ key: 'errors.min', values: { min } }),
+      max: ({ max }) => ({ key: 'errors.max', values: { max } }),
+    },
+  });
+
   socket.on('newMessage', (payload) => {
     store.dispatch(messagesActions.addMessage(payload));
   });
@@ -58,9 +82,11 @@ const init = async (socket) => {
 
   return (
     <Provider store={store}>
-      <ApiContext.Provider value={api}>
-        <App />
-      </ApiContext.Provider>
+      <I18nextProvider i18n={i18nextInstance}>
+        <ApiContext.Provider value={api}>
+          <App />
+        </ApiContext.Provider>
+      </I18nextProvider>
     </Provider>
   );
 };

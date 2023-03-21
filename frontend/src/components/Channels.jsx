@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonGroup, Dropdown, Nav } from 'react-bootstrap';
@@ -6,6 +7,8 @@ import { actions as modalActions } from '../slices/modal';
 import { actions as channelsActions, selectors } from '../slices/channels';
 
 const Channel = ({ channel, isCurrent, handleChooseChannel, handleRemoveChannel, handleRenameChannel }) => {
+  const { t } = useTranslation();
+
   const variant = isCurrent ? 'secondary' : null;
 
   return (
@@ -24,11 +27,11 @@ const Channel = ({ channel, isCurrent, handleChooseChannel, handleRemoveChannel,
               {channel.name}
             </Button>
             <Dropdown.Toggle className='flex-grow-0' variant={variant} split>
-              <span className='visually-hidden'>Channel control</span>
+              <span className='visually-hidden'>{t('channels.menu')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={handleRemoveChannel}>Remove</Dropdown.Item>
-              <Dropdown.Item onClick={handleRenameChannel}>Rename</Dropdown.Item>
+              <Dropdown.Item onClick={handleRemoveChannel}>{t('channels.remove')}</Dropdown.Item>
+              <Dropdown.Item onClick={handleRenameChannel}>{t('channels.rename')}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         ) : (
@@ -49,6 +52,7 @@ const Channel = ({ channel, isCurrent, handleChooseChannel, handleRemoveChannel,
 };
 
 const Channels = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
   const { currentChannelId } = useSelector((state) => state.channels);
@@ -72,7 +76,7 @@ const Channels = () => {
   return (
     <>
       <div className='d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4'>
-        <b>Channels</b>
+        <b>{t('channels.title')}</b>
         <Button
           className='p-0 text-primary'
           variant='group-vertical'
