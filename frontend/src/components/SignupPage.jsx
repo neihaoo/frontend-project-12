@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
+import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
@@ -9,7 +10,7 @@ import { Button, Card, Form, Image, Container, Row, Col } from 'react-bootstrap'
 import routes from '../routes';
 import { useAuth } from '../hooks';
 
-import singupImage from '../assets/signup.jpg'
+import singupImage from '../media/signup.jpg'
 
 const SignupPage = () => {
   const input = useRef();
@@ -46,14 +47,14 @@ const SignupPage = () => {
         navigate(routes.chatPagePath());
       } catch (error) {
         if (error.response.status === 409) {
-          input.current.select();
-
           setSingupFailed(true);
-
-          return;
+        } else if (!error.isAxiosError) {
+          toast.error(t('errors.unknown'));
+        } else {
+          toast.error(t('errors.network'));
         }
 
-        console.log({ error });
+        input.current.select();
       }
     },
   });

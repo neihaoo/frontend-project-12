@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -9,7 +10,7 @@ import { Button, Card, Form, Image, Container, Row, Col } from 'react-bootstrap'
 import routes from '../routes';
 import { useAuth } from '../hooks';
 
-import loginImage from '../assets/login.jpeg';
+import loginImage from '../media/login.jpeg';
 
 const LoginPage = () => {
   const input = useRef();
@@ -39,9 +40,15 @@ const LoginPage = () => {
         login(data);
         navigate(routes.chatPagePath());
       } catch (error) {
-        input.current.select();
+        if (error.response?.status === 401) {
+          setIsInvalid(true);
+        } else if (!error.isAxiosError) {
+          toast.error(t('errors.unknown'));
+        } else {
+          toast.error(t('errors.network'));
+        }
 
-        setIsInvalid(true);
+        input.current.select();
       }
     },
   });

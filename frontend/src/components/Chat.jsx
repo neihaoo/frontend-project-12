@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
+import { toast } from 'react-toastify';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +45,11 @@ const Chat = () => {
 
         resetForm();
       } catch (error) {
-        console.log({ error });
+        if (!error.isAxiosError) {
+          toast.error(t('errors.unknown'));
+        } else {
+          toast.error(t('errors.network'));
+        }
       }
 
       setSubmitting(false);

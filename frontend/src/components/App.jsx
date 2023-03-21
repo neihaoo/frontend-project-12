@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { BrowserRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 
 import Navbar from './Navbar';
@@ -58,6 +59,7 @@ const App = () => (
           <Route path='*' element={<ErrorPage />} />
         </Routes>
       </div>
+      <ToastContainer />
     </BrowserRouter>
   </AuthProvider>
 );

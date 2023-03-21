@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
+import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,16 +33,20 @@ const AddChannelForm = ({ handleClose }) => {
         const { id } = await addChannel({ name });
 
         dispatch(channelsActions.setCurrentChannel({ channelId: id }));
+        toast.success(t('channels.created'));
         handleClose();
       } catch (error) {
         if (error.name === 'ValidationError') {
           formik.values.name = name;
 
           setStatus(error.message);
+        } else if (!error.isAxiosError) {
+          toast.error(t('errors.unknown'));
+        } else {
+          toast.error(t('errors.network'));
         }
 
         input.current.select();
-        
         setSubmitting(false);
       }
     },
@@ -114,8 +119,15 @@ const RemoveChannelForm = ({ handleClose }) => {
     try {
       await removeChannel({ id: channelId });
 
+      toast.success(t('channels.removed'));
       handleClose();
-    } catch (erroe) {
+    } catch (error) {
+      if (!error.isAxiosError) {
+        toast.error(t('errors.unknown'));
+      } else {
+        toast.error(t('errors.network'));
+      }
+
       setLoading(false);
     }
   };
@@ -176,6 +188,7 @@ const RenameChannelForm = ({ handleClose }) => {
       try {
         await renameChannel({ name, id: channelId });
 
+        toast.success(t('channels.renamed'));
         handleClose();
       } catch (error) {
         if (error.name === 'ValidationError') {
@@ -183,11 +196,12 @@ const RenameChannelForm = ({ handleClose }) => {
 
           setStatus(error.message);
         } else if (!error.isAxiosError) {
-          throw error;
+          toast.error(t('errors.unknown'));
+        } else {
+          toast.error(t('errors.network'));
         }
 
         input.current.select();
-
         setSubmitting(false);
       }
     },

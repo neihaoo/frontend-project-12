@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useEffect} from 'react';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { Col, Container, Row } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import Chat from './Chat';
 import Modal from './Modal';
@@ -21,6 +23,7 @@ const normalizeData = (data) => ({
 });
 
 const ChatPage = () => {
+  const { t } =useTranslation();
   const dispatch = useDispatch();
   const { getAuthHeader } = useAuth();
 
@@ -35,12 +38,16 @@ const ChatPage = () => {
 
         dispatch(actions.setInitialState({ channels, messages, currentChannelId }));
       } catch (error) {
-        console.log({ error });
+        if (!error.isAxiosError) {
+          toast.error(t('errors.unknown'));
+        } else {
+          toast.error(t('errors.network'));
+        }
       }
     };
 
     fetchData();
-  }, [dispatch, getAuthHeader]);
+  }, [dispatch, getAuthHeader, t]);
 
   return (
     <>
