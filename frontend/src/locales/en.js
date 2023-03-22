@@ -50,7 +50,7 @@ const en = {
       exists: 'Username already taken',
     },
     notFound: {
-      message: 'You can go ',
+      message: 'You can go',
       title: 'Page not found',
       linkText: 'to the main page',
     },

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { Col, Container, Row } from 'react-bootstrap';
@@ -23,7 +23,7 @@ const normalizeData = (data) => ({
 });
 
 const ChatPage = () => {
-  const { t } =useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { getAuthHeader } = useAuth();
 
@@ -32,9 +32,9 @@ const ChatPage = () => {
       try {
         const { data } = await axios.get(routes.dataPath(), { headers: getAuthHeader() });
 
+        const { currentChannelId } = data;
         const channels = normalizeData(data.channels);
         const messages = normalizeData(data.messages);
-        const currentChannelId = data.currentChannelId;
 
         dispatch(actions.setInitialState({ channels, messages, currentChannelId }));
       } catch (error) {
@@ -53,12 +53,12 @@ const ChatPage = () => {
 
   return (
     <>
-      <Container className='h-100 my-4 overflow-hidden rounded shadow'>
-        <Row className='h-100 bg-white flex-md-row'>
-          <Col className='border-end px-0 bg-light flex-column h-100 d-flex' xs='4' md='2'>
+      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <Row className="h-100 bg-white flex-md-row">
+          <Col className="border-end px-0 bg-light flex-column h-100 d-flex" xs="4" md="2">
             <Channels />
           </Col>
-          <Col className='p-0 h-100'>
+          <Col className="p-0 h-100">
             <Chat />
           </Col>
         </Row>

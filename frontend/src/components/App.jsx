@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { BrowserRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+} from 'react-router-dom';
 
 import Navbar from './Navbar';
 import ChatPage from './ChatPage';
@@ -17,14 +23,14 @@ const AuthProvider = ({ children }) => {
   const [username, setUsername] = useState(userData?.username ?? null);
 
   const getAuthHeader = () => {
-    const userData = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user'));
 
-    return !!userData ? { Authorization: `Bearer ${userData.token}` } : {};
+    return user ? { Authorization: `Bearer ${user.token}` } : {};
   };
 
-  const login = (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
-    setUsername(userData.username);
+  const login = (user) => {
+    localStorage.setItem('user', JSON.stringify(user));
+    setUsername(user.username);
   };
 
   const logout = () => {
@@ -32,8 +38,15 @@ const AuthProvider = ({ children }) => {
     setUsername(null);
   };
 
+  const values = useMemo(() => ({
+    username,
+    getAuthHeader,
+    login,
+    logout,
+  }), [username]);
+
   return (
-    <AuthContext.Provider value={{ username, getAuthHeader, login, logout }}>
+    <AuthContext.Provider value={values}>
       {children}
     </AuthContext.Provider>
   );
@@ -48,15 +61,15 @@ const PrivateOutlet = () => {
 const App = () => (
   <AuthProvider>
     <BrowserRouter>
-      <div className='d-flex flex-column h-100'>
+      <div className="d-flex flex-column h-100">
         <Navbar />
         <Routes>
           <Route path={routes.loginPagePath()} element={<LoginPage />} />
           <Route path={routes.signupPagePath()} element={<SignupPage />} />
           <Route path={routes.chatPagePath()} element={<PrivateOutlet />}>
-            <Route path='' element={<ChatPage />} />
+            <Route path="" element={<ChatPage />} />
           </Route>
-          <Route path='*' element={<ErrorPage />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>
       <ToastContainer />

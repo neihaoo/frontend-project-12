@@ -13,7 +13,9 @@ export const selectCurrentChannel = createSelector(
 export const selectCurrentChannelMessages = createSelector(
   selectMessages,
   selectCurrentChannelId,
-  (messages, currentChannelId) => messages.filter(({ channelId }) => channelId === currentChannelId),
+  (messages, currentChannelId) => (
+    messages.filter(({ channelId }) => channelId === currentChannelId)
+  ),
 );
 
 export const selectChannelsNames = createSelector(

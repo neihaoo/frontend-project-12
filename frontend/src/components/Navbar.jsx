@@ -10,10 +10,10 @@ const Navbar = () => {
   const { logout, username } = useAuth();
 
   return (
-    <BootstrapNavbar className='shadow-sm' bg='white' expand='lg'>
+    <BootstrapNavbar className="shadow-sm" bg="white" expand="lg">
       <Container>
         <BootstrapNavbar.Brand as={Link} to={routes.chatPagePath()}>{t('title')}</BootstrapNavbar.Brand>
-        {!!username && <Button variant='primary' type='button' onClick={logout}>{t('logout')}</Button>}
+        {!!username && <Button variant="primary" type="button" onClick={logout}>{t('logout')}</Button>}
       </Container>
     </BootstrapNavbar>
   );

@@ -12,7 +12,12 @@ import { actions as modalActions } from '../slices/modal';
 import { actions as channelsActions, selectors as channelsSelectors } from '../slices/channels';
 
 const getValidationSchema = (channels) => object({
-  name: string().trim().required().min(3).max(20).notOneOf(channels),
+  name: string()
+    .trim()
+    .required()
+    .min(3)
+    .max(20)
+    .notOneOf(channels),
 });
 
 const AddChannelForm = ({ handleClose }) => {
@@ -59,18 +64,18 @@ const AddChannelForm = ({ handleClose }) => {
       <BootstrapModal.Header>
         <BootstrapModal.Title>{t('modals.add')}</BootstrapModal.Title>
         <Button
-          variant='close'
-          type='button'
+          variant="close"
+          type="button"
           onClick={handleClose}
           aria-label={t('modals.close')}
-          data-bs-dismiss='modal'
+          data-bs-dismiss="modal"
         />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group controlId='name'>
+          <Form.Group controlId="name">
             <Form.Control
-              className='mb-2'
+              className="mb-2"
               disabled={formik.isSubmitting}
               ref={input}
               onChange={formik.handleChange}
@@ -78,21 +83,21 @@ const AddChannelForm = ({ handleClose }) => {
               isInvalid={formik.errors.name && formik.touched.name}
             />
             <Form.Label visuallyHidden>{t('modals.channelName')}</Form.Label>
-            <Form.Control.Feedback type='invalid'>
+            <Form.Control.Feedback type="invalid">
               {t(formik.errors.name?.key, formik.errors.name?.values)}
             </Form.Control.Feedback>
-            <div className='d-flex justify-content-end'>
+            <div className="d-flex justify-content-end">
               <Button
-                className='me-2'
-                variant='secondary'
-                type='button'
+                className="me-2"
+                variant="secondary"
+                type="button"
                 onClick={handleClose}
               >
                 {t('modals.cancel')}
               </Button>
               <Button
-                variant='primary'
-                type='submit'
+                variant="primary"
+                type="submit"
                 disabled={formik.isSubmitting}
               >
                 {t('modals.submit')}
@@ -125,7 +130,7 @@ const RemoveChannelForm = ({ handleClose }) => {
       } else {
         toast.error(t('errors.unknown'));
       }
-      
+
       setLoading(false);
       throw error;
     }
@@ -136,28 +141,28 @@ const RemoveChannelForm = ({ handleClose }) => {
       <BootstrapModal.Header>
         <BootstrapModal.Title>{t('modals.remove')}</BootstrapModal.Title>
         <Button
-          variant='close'
-          type='button'
+          variant="close"
+          type="button"
           onClick={handleClose}
           aria-label={t('modals.close')}
-          data-bs-dismiss='modal'
+          data-bs-dismiss="modal"
         />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
-        <p className='lead'>{t('modals.confirmation')}</p>
-        <div className='d-flex justify-content-end'>
+        <p className="lead">{t('modals.confirmation')}</p>
+        <div className="d-flex justify-content-end">
           <Button
-            className='me-2'
-            variant='secondary'
-            type='button'
+            className="me-2"
+            variant="secondary"
+            type="button"
             onClick={handleClose}
             disabled={loading}
           >
             {t('modals.cancel')}
           </Button>
           <Button
-            variant='danger'
-            type='button'
+            variant="danger"
+            type="button"
             onClick={handleRemove}
             disabled={loading}
           >
@@ -213,18 +218,18 @@ const RenameChannelForm = ({ handleClose }) => {
       <BootstrapModal.Header>
         <BootstrapModal.Title>{t('modals.rename')}</BootstrapModal.Title>
         <Button
-          variant='close'
-          type='button'
+          variant="close"
+          type="button"
           onClick={handleClose}
           aria-label={t('modals.close')}
-          data-bs-dismiss='modal'
+          data-bs-dismiss="modal"
         />
       </BootstrapModal.Header>
       <BootstrapModal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group controlId='name'>
+          <Form.Group controlId="name">
             <Form.Control
-              className='mb-2'
+              className="mb-2"
               disabled={formik.isSubmitting}
               ref={input}
               onChange={formik.handleChange}
@@ -232,21 +237,21 @@ const RenameChannelForm = ({ handleClose }) => {
               isInvalid={formik.errors.name && formik.touched.name}
             />
             <Form.Label visuallyHidden>{t('modals.channelName')}</Form.Label>
-            <Form.Control.Feedback type='invalid'>
+            <Form.Control.Feedback type="invalid">
               {t(formik.errors.name?.key, formik.errors.name?.values)}
             </Form.Control.Feedback>
-            <div className='d-flex justify-content-end'>
+            <div className="d-flex justify-content-end">
               <Button
-                className='me-2'
-                variant='secondary'
-                type='button'
+                className="me-2"
+                variant="secondary"
+                type="button"
                 onClick={handleClose}
               >
                 {t('modals.cancel')}
               </Button>
               <Button
-                variant='primary'
-                type='submit'
+                variant="primary"
+                type="submit"
                 disabled={formik.isSubmitting}
               >
                 {t('modals.submit')}

@@ -1,6 +1,4 @@
-import en from "./en";
-import ru from "./ru";
+import en from './en';
+import ru from './ru';
 
-const locales = { en, ru };
-
-export default locales;
+export default { en, ru };

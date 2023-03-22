@@ -40,7 +40,7 @@ const ru = {
       messageCount_few: 'сообщения',
       messageCount_many: 'сообщений',
       messageCount_zero: 'сообщений',
-      enterMessage: 'Введите сообщение...'
+      enterMessage: 'Введите сообщение...',
     },
     signup: {
       password: 'Пароль',
@@ -54,7 +54,7 @@ const ru = {
     notFound: {
       title: 'Страница не найдена',
       linkText: 'на главную страницу',
-      message: 'Но вы можете перейти ',
+      message: 'Но вы можете перейти',
     },
     errors: {
       network: 'Ошибка соединения',

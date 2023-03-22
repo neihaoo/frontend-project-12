@@ -68,44 +68,48 @@ const Chat = () => {
   useEffect(() => {
     input.current.focus();
     animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
-  }, [messages.length])
+  }, [messages.length]);
 
   return (
-    <div className='d-flex flex-column h-100'>
-      <div className='bg-light mb-4 p-3 shadow-sm small'>
-        <p className='m-0'>
-          <b># {channel?.name}</b>
+    <div className="d-flex flex-column h-100">
+      <div className="bg-light mb-4 p-3 shadow-sm small">
+        <p className="m-0">
+          <b>
+            #
+            {' '}
+            {channel?.name}
+          </b>
         </p>
-        <span className='text-muted'>
+        <span className="text-muted">
           {`${messages.length} ${t('chat.messageCount', { count: messages.length })}`}
         </span>
       </div>
-      <div id='messages-box' className='chat-messages overflow-auto px-5'>
-        {messages.map(({ id, username, body }) => (
-          <Message key={id} username={username} body={filter.clean(body)} />
+      <div id="messages-box" className="chat-messages overflow-auto px-5">
+        {messages.map((message) => (
+          <Message key={message.id} username={message.username} body={filter.clean(message.body)} />
         ))}
       </div>
-      <div className='mt-auto px-5 py-3'>
-        <Form className='py-1 border rounded-2' noValidate onSubmit={formik.handleSubmit}>
+      <div className="mt-auto px-5 py-3">
+        <Form className="py-1 border rounded-2" noValidate onSubmit={formik.handleSubmit}>
           <InputGroup hasValidation={isInvalid}>
             <Form.Control
               ref={input}
-              name='body'
+              name="body"
               aria-label={t('chat.newMessage')}
               value={formik.values.body}
-              className='border-0 p-0 ps-2'
+              className="border-0 p-0 ps-2"
               disabled={formik.isSubmitting}
               onChange={formik.handleChange}
               placeholder={t('chat.enterMessage')}
             />
-            <Button className='border-0' variant='group-vertical' type='submit' disabled={isInvalid}>
+            <Button className="border-0" variant="group-vertical" type="submit" disabled={isInvalid}>
               <ArrowRightSquare size={20} />
-              <span className='visually-hidden'>{t('chat.send')}</span>
+              <span className="visually-hidden">{t('chat.send')}</span>
             </Button>
           </InputGroup>
         </Form>
       </div>
-    </div>   
+    </div>
   );
 };
 

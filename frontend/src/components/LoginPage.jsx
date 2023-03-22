@@ -5,7 +5,15 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Button, Card, Form, Image, Container, Row, Col } from 'react-bootstrap';
+import {
+  Button,
+  Card,
+  Form,
+  Image,
+  Container,
+  Row,
+  Col,
+} from 'react-bootstrap';
 
 import routes from '../routes';
 import { useAuth } from '../hooks';
@@ -59,20 +67,20 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <Container className='h-100' fluid>
-      <Row className='justify-content-center align-content-center h-100'>
-        <Col xs='12' md='8' xxl='6'>
-          <Card className='shadow-sm'>
-            <Card.Body className='row p-5'>
-              <Col className='d-flex align-items-center justify-content-center' xs='12' md='6'>
+    <Container className="h-100" fluid>
+      <Row className="justify-content-center align-content-center h-100">
+        <Col xs="12" md="8" xxl="6">
+          <Card className="shadow-sm">
+            <Card.Body className="row p-5">
+              <Col className="d-flex align-items-center justify-content-center" xs="12" md="6">
                 <Image src={loginImage} alt={t('login.title')} roundedCircle />
               </Col>
-              <Form className='col-12 col-md-6 mt-3 mt-mb-0' onSubmit={formik.handleSubmit}>
-                <h1 className='text-center mb-4'>{t('login.title')}</h1>
-                <Form.FloatingLabel className='mb-3' label={t('login.username')}>
+              <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
+                <h1 className="text-center mb-4">{t('login.title')}</h1>
+                <Form.FloatingLabel className="mb-3" label={t('login.username')}>
                   <Form.Control
-                    name='username'
-                    autocomplete='username'
+                    name="username"
+                    autocomplete="username"
                     placeholder={t('login.username')}
                     value={formik.values.username}
                     isInvalid={isInvalid}
@@ -81,12 +89,12 @@ const LoginPage = () => {
                     required
                   />
                 </Form.FloatingLabel>
-                <Form.FloatingLabel className='mb-3' label={t('login.password')}>
+                <Form.FloatingLabel className="mb-3" label={t('login.password')}>
                   <Form.Control
-                    name='password'
-                    autocomplete='current-password'
+                    name="password"
+                    autocomplete="current-password"
                     placeholder={t('login.password')}
-                    type='password'
+                    type="password"
                     value={formik.values.password}
                     isInvalid={isInvalid}
                     onChange={formik.handleChange}
@@ -94,14 +102,14 @@ const LoginPage = () => {
                   />
                   {isInvalid && <Form.Control.Feedback type="invalid" tooltip>{t('login.auth')}</Form.Control.Feedback>}
                 </Form.FloatingLabel>
-                <Button className='w-100 mb-3' variant='outline-primary' type='submit'>{t('login.submit')}</Button>
+                <Button className="w-100 mb-3" variant="outline-primary" type="submit">{t('login.submit')}</Button>
               </Form>
             </Card.Body>
-            <Card.Footer className='p-4'>
-              <div className='text-center'>
+            <Card.Footer className="p-4">
+              <div className="text-center">
                 <span>{t('login.newToChat')}</span>
                 {' '}
-                <Link to='/signup'>{t('login.signup')}</Link>
+                <Link to="/signup">{t('login.signup')}</Link>
               </div>
             </Card.Footer>
           </Card>

@@ -14,8 +14,8 @@ import { actions as channelsActions } from './slices/channels';
 const init = async (socket) => {
   const isProduction = process.env.NODE_ENV === 'production';
 
-  const withAcknowledgement = (event) => (...args) => new Promise((resolve, reject) => {
-    socket.timeout(5000).volatile.emit(event, ...args, (error, response) => {
+  const withAcknowledgement = (event) => (args) => new Promise((resolve, reject) => {
+    socket.timeout(5000).volatile.emit(event, args, (error, response) => {
       if (error) {
         reject(error);
       } else {

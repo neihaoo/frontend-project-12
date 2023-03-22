@@ -3,33 +3,44 @@ import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, ButtonGroup, Dropdown, Nav } from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  Dropdown,
+  Nav,
+} from 'react-bootstrap';
 
 import { actions as modalActions } from '../slices/modal';
 import { defaultChannelId, actions as channelsActions, selectors } from '../slices/channels';
 
-const Channel = ({ channel, isCurrent, handleChooseChannel, handleRemoveChannel, handleRenameChannel }) => {
+const Channel = ({
+  channel,
+  isCurrent,
+  handleChooseChannel,
+  handleRemoveChannel,
+  handleRenameChannel,
+}) => {
   const { t } = useTranslation();
 
   const variant = isCurrent ? 'secondary' : null;
 
   return (
-    <Nav.Item key={channel.id} as='li'>
+    <Nav.Item key={channel.id} as="li">
       {
         channel.removable ? (
-          <Dropdown className='d-flex' as={ButtonGroup}>
+          <Dropdown className="d-flex" as={ButtonGroup}>
             <Button
               key={channel.id}
-              className='w-100 rounded-0 text-start text-truncate'
-              type='button'
+              className="w-100 rounded-0 text-start text-truncate"
+              type="button"
               onClick={handleChooseChannel}
               variant={variant}
             >
-              <span className='me-1'>#</span>
+              <span className="me-1">#</span>
               {channel.name}
             </Button>
-            <Dropdown.Toggle className='flex-grow-0' variant={variant} split>
-              <span className='visually-hidden'>{t('channels.menu')}</span>
+            <Dropdown.Toggle className="flex-grow-0" variant={variant} split>
+              <span className="visually-hidden">{t('channels.menu')}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={handleRemoveChannel}>{t('channels.remove')}</Dropdown.Item>
@@ -39,12 +50,12 @@ const Channel = ({ channel, isCurrent, handleChooseChannel, handleRemoveChannel,
         ) : (
           <Button
             key={channel.id}
-            className='w-100 rounded-0 text-start'
+            className="w-100 rounded-0 text-start"
             variant={variant}
-            type='button'
+            type="button"
             onClick={handleChooseChannel}
           >
-            <span className='me-1'>#</span>
+            <span className="me-1">#</span>
             {channel.name}
           </Button>
         )
@@ -87,23 +98,23 @@ const Channels = () => {
 
   return (
     <>
-      <div className='d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4'>
+      <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>{t('channels.title')}</b>
         <Button
-          className='p-0 text-primary'
-          variant='group-vertical'
-          type='button'
+          className="p-0 text-primary"
+          variant="group-vertical"
+          type="button"
           onClick={handleAddChannel}
         >
           <PlusSquare size={20} />
-          <span className='visually-hidden'>+</span>
+          <span className="visually-hidden">+</span>
         </Button>
       </div>
       <Nav
-        id='channels-box'
-        className='flex-column px-2 mb-3 overflow-auto h-100 d-block'
-        as={'ul'}
-        variant='pills'
+        id="channels-box"
+        className="flex-column px-2 mb-3 overflow-auto h-100 d-block"
+        as="ul"
+        variant="pills"
         fill
       >
         {channels.map((channel) => (
