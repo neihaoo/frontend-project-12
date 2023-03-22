@@ -28,7 +28,7 @@ const AddChannelForm = ({ handleClose }) => {
     },
     validationSchema: getValidationSchema(channels),
     validateOnChange: false,
-    onSubmit: async ({ name }, { setSubmitting, setStatus }) => {
+    onSubmit: async ({ name }, { setSubmitting }) => {
       try {
         const { id } = await addChannel({ name });
 
@@ -36,19 +36,17 @@ const AddChannelForm = ({ handleClose }) => {
         toast.success(t('channels.created'));
         handleClose();
       } catch (error) {
-        if (error.name === 'ValidationError') {
-          formik.values.name = name;
-
-          setStatus(error.message);
-        } else if (!error.isAxiosError) {
-          toast.error(t('errors.unknown'));
-        } else {
+        if (error.isAxiosError) {
           toast.error(t('errors.network'));
+        } else {
+          toast.error(t('errors.unknown'));
         }
 
         input.current.select();
-        setSubmitting(false);
+        throw error;
       }
+
+      setSubmitting(false);
     },
   });
 
@@ -77,11 +75,11 @@ const AddChannelForm = ({ handleClose }) => {
               ref={input}
               onChange={formik.handleChange}
               value={formik.values.name}
-              isInvalid={(formik.errors.name && formik.touched.name) || !!formik.status}
+              isInvalid={formik.errors.name && formik.touched.name}
             />
             <Form.Label visuallyHidden>{t('modals.channelName')}</Form.Label>
             <Form.Control.Feedback type='invalid'>
-              {t(formik.errors.name) || t(formik.status)}
+              {t(formik.errors.name?.key, formik.errors.name?.values)}
             </Form.Control.Feedback>
             <div className='d-flex justify-content-end'>
               <Button
@@ -122,13 +120,14 @@ const RemoveChannelForm = ({ handleClose }) => {
       toast.success(t('channels.removed'));
       handleClose();
     } catch (error) {
-      if (!error.isAxiosError) {
-        toast.error(t('errors.unknown'));
-      } else {
+      if (error.isAxiosError) {
         toast.error(t('errors.network'));
+      } else {
+        toast.error(t('errors.unknown'));
       }
-
+      
       setLoading(false);
+      throw error;
     }
   };
 
@@ -184,26 +183,24 @@ const RenameChannelForm = ({ handleClose }) => {
     },
     validationSchema: getValidationSchema(channels),
     validateOnChange: false,
-    onSubmit: async ({ name }, { setSubmitting, setStatus }) => {
+    onSubmit: async ({ name }, { setSubmitting }) => {
       try {
         await renameChannel({ name, id: channelId });
 
         toast.success(t('channels.renamed'));
         handleClose();
       } catch (error) {
-        if (error.name === 'ValidationError') {
-          formik.values.name = name;
-
-          setStatus(error.message);
-        } else if (!error.isAxiosError) {
-          toast.error(t('errors.unknown'));
-        } else {
+        if (error.isAxiosError) {
           toast.error(t('errors.network'));
+        } else {
+          toast.error(t('errors.unknown'));
         }
 
         input.current.select();
-        setSubmitting(false);
+        throw error;
       }
+
+      setSubmitting(false);
     },
   });
 
@@ -232,11 +229,11 @@ const RenameChannelForm = ({ handleClose }) => {
               ref={input}
               onChange={formik.handleChange}
               value={formik.values.name}
-              isInvalid={(formik.errors.name && formik.touched.name) || !!formik.status}
+              isInvalid={formik.errors.name && formik.touched.name}
             />
             <Form.Label visuallyHidden>{t('modals.channelName')}</Form.Label>
             <Form.Control.Feedback type='invalid'>
-              {t(formik.errors.name) || t(formik.status)}
+              {t(formik.errors.name?.key, formik.errors.name?.values)}
             </Form.Control.Feedback>
             <div className='d-flex justify-content-end'>
               <Button

@@ -40,15 +40,16 @@ const LoginPage = () => {
         login(data);
         navigate(routes.chatPagePath());
       } catch (error) {
-        if (error.response?.status === 401) {
+        if (error.response.status === 401) {
           setIsInvalid(true);
-        } else if (!error.isAxiosError) {
-          toast.error(t('errors.unknown'));
-        } else {
+        } else if (error.isAxiosError) {
           toast.error(t('errors.network'));
+        } else {
+          toast.error(t('errors.unknown'));
         }
 
         input.current.select();
+        throw error;
       }
     },
   });

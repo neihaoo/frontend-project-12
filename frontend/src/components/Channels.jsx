@@ -1,10 +1,12 @@
+import { useEffect } from 'react';
+import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonGroup, Dropdown, Nav } from 'react-bootstrap';
 
 import { actions as modalActions } from '../slices/modal';
-import { actions as channelsActions, selectors } from '../slices/channels';
+import { defaultChannelId, actions as channelsActions, selectors } from '../slices/channels';
 
 const Channel = ({ channel, isCurrent, handleChooseChannel, handleRemoveChannel, handleRenameChannel }) => {
   const { t } = useTranslation();
@@ -56,6 +58,7 @@ const Channels = () => {
   const dispatch = useDispatch();
   const channels = useSelector(selectors.selectAll);
   const { currentChannelId } = useSelector((state) => state.channels);
+  const lastChannelId = channels.at(-1)?.id;
 
   const handleChooseChannel = (channelId) => () => {
     dispatch(channelsActions.setCurrentChannel({ channelId }));
@@ -72,6 +75,15 @@ const Channels = () => {
   const handleRenameChannel = (channelId) => () => {
     dispatch(modalActions.openModal({ type: 'renameChannel', extra: { channelId } }));
   };
+
+  useEffect(() => {
+    if (currentChannelId === defaultChannelId) {
+      animateScroll.scrollToTop({ containerId: 'channels-box', delay: 0, duration: 0 });
+    }
+    if (currentChannelId === lastChannelId) {
+      animateScroll.scrollToBottom({ containerId: 'channels-box', delay: 0, duration: 0 });
+    }
+  }, [currentChannelId, lastChannelId]);
 
   return (
     <>

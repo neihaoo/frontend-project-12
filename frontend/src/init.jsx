@@ -11,43 +11,30 @@ import { ApiContext } from './contexts';
 import { actions as messagesActions } from './slices/messages';
 import { actions as channelsActions } from './slices/channels';
 
-const withAcknowledgement = (fn) => (...args) => new Promise((resolve, reject) => {
-  let state = 'pending';
-
-  const timer = setTimeout(() => {
-    state = 'rejected';
-
-    reject();
-  }, 5000);
-
-  fn(...args, ({ status, data }) => {
-    if (state !== 'pending') {
-      return;
-    };
-
-    clearTimeout(timer);
-
-    if (status === 'ok') {
-      state = 'resolved';
-      
-      resolve(data);
-    }
-
-    reject();
-  });
-});
-
 const init = async (socket) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  const withAcknowledgement = (event) => (...args) => new Promise((resolve, reject) => {
+    socket.timeout(5000).volatile.emit(event, ...args, (error, response) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(response.data);
+      }
+    });
+  });
+
   const api = {
-    sendMessage: withAcknowledgement((...args) => socket.volatile.emit('newMessage', ...args)),
-    addChannel: withAcknowledgement((...args) => socket.volatile.emit('newChannel', ...args)),
-    renameChannel: withAcknowledgement((...args) => socket.volatile.emit('renameChannel', ...args)),
-    removeChannel: withAcknowledgement((...args) => socket.volatile.emit('removeChannel', ...args)),
+    sendMessage: withAcknowledgement('newMessage'),
+    addChannel: withAcknowledgement('newChannel'),
+    renameChannel: withAcknowledgement('renameChannel'),
+    removeChannel: withAcknowledgement('removeChannel'),
   };
 
   const rollbarConfig = {
-    accessToken: 'e46e969a0e934ae0918e8b867e632dea',
-    environment: 'production',
+    enabled: isProduction,
+    accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
+    environment: process.env.NODE_ENV,
     captureUncaught: true,
     captureUnhandledRejections: true,
   };

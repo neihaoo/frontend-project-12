@@ -38,11 +38,13 @@ const ChatPage = () => {
 
         dispatch(actions.setInitialState({ channels, messages, currentChannelId }));
       } catch (error) {
-        if (!error.isAxiosError) {
-          toast.error(t('errors.unknown'));
-        } else {
+        if (error.isAxiosError) {
           toast.error(t('errors.network'));
+        } else {
+          toast.error(t('errors.unknown'));
         }
+
+        throw error;
       }
     };
 

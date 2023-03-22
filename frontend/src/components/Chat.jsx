@@ -4,6 +4,7 @@ import { object, string } from 'yup';
 import { toast } from 'react-toastify';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { Button, InputGroup, Form } from 'react-bootstrap';
@@ -47,11 +48,13 @@ const Chat = () => {
 
         resetForm();
       } catch (error) {
-        if (!error.isAxiosError) {
-          toast.error(t('errors.unknown'));
-        } else {
+        if (error.isAxiosError) {
           toast.error(t('errors.network'));
+        } else {
+          toast.error(t('errors.unknown'));
         }
+
+        throw error;
       }
 
       setSubmitting(false);
@@ -64,7 +67,8 @@ const Chat = () => {
 
   useEffect(() => {
     input.current.focus();
-  })
+    animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
+  }, [messages.length])
 
   return (
     <div className='d-flex flex-column h-100'>

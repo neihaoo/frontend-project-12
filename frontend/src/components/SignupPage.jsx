@@ -48,13 +48,14 @@ const SignupPage = () => {
       } catch (error) {
         if (error.response.status === 409) {
           setSingupFailed(true);
-        } else if (!error.isAxiosError) {
-          toast.error(t('errors.unknown'));
-        } else {
+        } else if (error.isAxiosError) {
           toast.error(t('errors.network'));
+        } else {
+          toast.error(t('errors.unknown'));
         }
-
+        
         input.current.select();
+        throw error;
       }
     },
   });
