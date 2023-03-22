@@ -68,7 +68,7 @@ const Chat = () => {
   useEffect(() => {
     input.current.focus();
     animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
-  }, [messages.length]);
+  }, [channel, messages.length]);
 
   return (
     <div className="d-flex flex-column h-100">
