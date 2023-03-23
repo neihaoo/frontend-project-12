@@ -115,10 +115,7 @@ const SignupPage = () => {
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {t(
-                      formik.errors.username?.key,
-                      formik.errors.username?.values
-                    )}
+                    {t(formik.errors.username)}
                   </Form.Control.Feedback>
                 </Form.FloatingLabel>
                 <Form.FloatingLabel
@@ -139,10 +136,7 @@ const SignupPage = () => {
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {t(
-                      formik.errors.password?.key,
-                      formik.errors.password?.values
-                    )}
+                    {t(formik.errors.password)}
                   </Form.Control.Feedback>
                 </Form.FloatingLabel>
                 <Form.FloatingLabel

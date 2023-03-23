@@ -10,17 +10,9 @@ import Chat from './Chat';
 import Modal from './Modal';
 
 import { actions } from '../slices';
+import { normalizeData } from '../utils';
 import routes from '../routes';
 import { useAuth } from '../hooks';
-
-const normalizeData = (data) => ({
-  entities: data.reduce((acc, item) => {
-    acc[item.id] = item;
-
-    return acc;
-  }, {}),
-  ids: data.map(({ id }) => id),
-});
 
 const ChatPage = () => {
   const { t } = useTranslation();

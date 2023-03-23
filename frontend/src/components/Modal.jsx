@@ -79,7 +79,7 @@ const AddChannelForm = ({ handleClose }) => {
             />
             <Form.Label visuallyHidden>{t('modals.channelName')}</Form.Label>
             <Form.Control.Feedback type="invalid">
-              {t(formik.errors.name?.key, formik.errors.name?.values)}
+              {t(formik.errors.name)}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button
@@ -235,7 +235,7 @@ const RenameChannelForm = ({ handleClose }) => {
             />
             <Form.Label visuallyHidden>{t('modals.channelName')}</Form.Label>
             <Form.Control.Feedback type="invalid">
-              {t(formik.errors.name?.key, formik.errors.name?.values)}
+              {t(formik.errors.name)}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button

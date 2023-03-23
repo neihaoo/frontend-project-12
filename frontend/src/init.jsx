@@ -9,6 +9,7 @@ import App from './components/App';
 
 import reducer, { actions } from './slices';
 import { ApiContext } from './contexts';
+import { getTranslation } from './utils';
 import resources from './locales';
 
 const init = async (socket) => {
@@ -57,8 +58,8 @@ const init = async (socket) => {
       required: 'errors.required',
     },
     string: {
-      max: ({ max }) => ({ key: 'errors.max', values: { max } }),
-      min: ({ min }) => ({ key: 'errors.min', values: { min } }),
+      max: ({ path }) => getTranslation(path),
+      min: ({ path }) => getTranslation(path),
     },
   });
 
