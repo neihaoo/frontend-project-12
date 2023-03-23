@@ -44,7 +44,6 @@ const SignupPage = () => {
       confirmPassword: '',
     },
     validationSchema,
-    validateOnChange: false,
     onSubmit: async ({ password, username }) => {
       setSingupFailed(false);
 
@@ -111,6 +110,7 @@ const SignupPage = () => {
                       singupFailed
                     }
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     ref={input}
                     required
                   />
@@ -133,6 +133,7 @@ const SignupPage = () => {
                       singupFailed
                     }
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
@@ -155,6 +156,7 @@ const SignupPage = () => {
                       singupFailed
                     }
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
