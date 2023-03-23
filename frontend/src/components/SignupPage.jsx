@@ -28,12 +28,19 @@ const SignupPage = () => {
   const [signupFailed, setSignupFailed] = useState(false);
 
   const validationSchema = object({
-    username: string().trim().required().min(3).max(20),
-    password: string().trim().required().min(6),
+    username: string()
+      .trim()
+      .required()
+      .min(3)
+      .max(20),
+    password: string()
+      .trim()
+      .required()
+      .min(6),
     confirmPassword: string().test(
       'confirmPassword',
       'signup.match',
-      (value, context) => value === context.parent.password
+      (value, context) => value === context.parent.password,
     ),
   });
 
@@ -108,8 +115,8 @@ const SignupPage = () => {
                     placeholder={t('signup.username')}
                     value={formik.values.username}
                     isInvalid={
-                      (formik.errors.username && formik.touched.username) ||
-                      signupFailed
+                      (formik.errors.username && formik.touched.username)
+                      || signupFailed
                     }
                     onChange={formik.handleChange}
                     ref={input}
@@ -131,8 +138,8 @@ const SignupPage = () => {
                     placeholder={t('signup.password')}
                     value={formik.values.password}
                     isInvalid={
-                      (formik.errors.password && formik.touched.password) ||
-                      signupFailed
+                      (formik.errors.password && formik.touched.password)
+                      || signupFailed
                     }
                     onChange={formik.handleChange}
                     required
@@ -153,9 +160,9 @@ const SignupPage = () => {
                     placeholder={t('signup.confirm')}
                     value={formik.values.confirmPassword}
                     isInvalid={
-                      (formik.errors.confirmPassword &&
-                        formik.touched.confirmPassword) ||
-                      signupFailed
+                      (formik.errors.confirmPassword
+                        && formik.touched.confirmPassword)
+                      || signupFailed
                     }
                     onChange={formik.handleChange}
                     required

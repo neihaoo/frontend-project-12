@@ -10,10 +10,14 @@ import { actions, selectors } from '../slices';
 import { selectChannelsNames } from '../selectors';
 import { useApi } from '../hooks';
 
-const getValidationSchema = (channels) =>
-  object({
-    name: string().trim().required().min(3).max(20).notOneOf(channels),
-  });
+const getValidationSchema = (channels) => object({
+  name: string()
+    .trim()
+    .required()
+    .min(3)
+    .max(20)
+    .notOneOf(channels),
+});
 
 const AddChannelForm = ({ handleClose }) => {
   const input = useRef();
@@ -175,9 +179,9 @@ const RenameChannelForm = ({ handleClose }) => {
   const { renameChannel } = useApi();
   const channels = useSelector(selectChannelsNames);
   const { channelId } = useSelector((state) => state.modal.extra);
-  const channel = useSelector((state) =>
+  const channel = useSelector((state) => (
     selectors.channelsSelectors.selectById(state, channelId)
-  );
+  ));
 
   const formik = useFormik({
     initialValues: {

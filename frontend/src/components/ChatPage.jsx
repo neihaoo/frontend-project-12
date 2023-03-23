@@ -1,4 +1,9 @@
-import { Col, Container, Row, Spinner } from 'react-bootstrap';
+import {
+  Col,
+  Container,
+  Row,
+  Spinner,
+} from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -32,7 +37,7 @@ const ChatPage = () => {
         const messages = normalizeData(data.messages);
 
         dispatch(
-          actions.setInitialState({ channels, messages, currentChannelId })
+          actions.setInitialState({ channels, messages, currentChannelId }),
         );
       } catch (error) {
         if (error.isAxiosError) {

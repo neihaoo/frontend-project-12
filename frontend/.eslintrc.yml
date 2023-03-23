@@ -5,7 +5,6 @@ env:
 extends:
   - airbnb
   - airbnb/hooks
-  - prettier
   - plugin:functional/recommended
   - plugin:import/recommended
   - plugin:jsx-a11y/recommended

@@ -13,7 +13,9 @@ const ErrorPage = () => {
       />
       <h1 className="h4 text-muted">{t('notFound.title')}</h1>
       <p className="text-muted">
-        {t('notFound.message')} <a href="/">{t('notFound.linkText')}</a>
+        {t('notFound.message')}
+        {' '}
+        <a href="/">{t('notFound.linkText')}</a>
       </p>
     </div>
   );

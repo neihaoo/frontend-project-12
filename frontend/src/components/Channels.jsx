@@ -1,4 +1,9 @@
-import { Button, ButtonGroup, Dropdown, Nav } from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  Dropdown,
+  Nav,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { animateScroll } from 'react-scroll';
 import { PlusSquare } from 'react-bootstrap-icons';
@@ -77,13 +82,13 @@ const Channels = () => {
 
   const handleRemoveChannel = (channelId) => () => {
     dispatch(
-      actions.openModal({ extra: { channelId }, type: 'removeChannel' })
+      actions.openModal({ extra: { channelId }, type: 'removeChannel' }),
     );
   };
 
   const handleRenameChannel = (channelId) => () => {
     dispatch(
-      actions.openModal({ extra: { channelId }, type: 'renameChannel' })
+      actions.openModal({ extra: { channelId }, type: 'renameChannel' }),
     );
   };
 

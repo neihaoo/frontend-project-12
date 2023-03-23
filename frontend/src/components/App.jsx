@@ -38,15 +38,12 @@ const AuthProvider = ({ children }) => {
     setUsername(null);
   };
 
-  const values = useMemo(
-    () => ({
-      getAuthHeader,
-      login,
-      logout,
-      username,
-    }),
-    [username]
-  );
+  const values = useMemo(() => ({
+    getAuthHeader,
+    login,
+    logout,
+    username,
+  }), [username]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };

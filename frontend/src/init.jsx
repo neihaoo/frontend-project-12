@@ -15,7 +15,7 @@ import resources from './locales';
 const init = async (socket) => {
   const isProduction = process.env.NODE_ENV === 'production';
 
-  const withAcknowledgement = (event) => (args) =>
+  const withAcknowledgement = (event) => (args) => (
     new Promise((resolve, reject) => {
       socket.timeout(5000).volatile.emit(event, args, (error, response) => {
         if (error) {
@@ -24,7 +24,8 @@ const init = async (socket) => {
           resolve(response.data);
         }
       });
-    });
+    })
+  );
 
   const api = {
     addChannel: withAcknowledgement('newChannel'),
@@ -73,12 +74,10 @@ const init = async (socket) => {
     store.dispatch(actions.removeChannel(id));
   });
   socket.on('renameChannel', ({ id, name }) => {
-    store.dispatch(
-      actions.renameChannel({
-        changes: { name },
-        id,
-      })
-    );
+    store.dispatch(actions.renameChannel({
+      changes: { name },
+      id,
+    }));
   });
 
   return (
