@@ -1,22 +1,22 @@
-import { useMemo, useState } from 'react';
-import { ToastContainer } from 'react-toastify';
 import {
   BrowserRouter,
-  Route,
-  Routes,
   Navigate,
   Outlet,
+  Route,
+  Routes,
 } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 
-import Navbar from './Navbar';
 import ChatPage from './ChatPage';
-import LoginPage from './LoginPage';
 import ErrorPage from './ErrorPage';
+import LoginPage from './LoginPage';
+import Navbar from './Navbar';
 import SignupPage from './SignupPage';
 
+import { AuthContext } from '../contexts';
 import routes from '../routes';
 import { useAuth } from '../hooks';
-import { AuthContext } from '../contexts';
 
 const AuthProvider = ({ children }) => {
   const userData = JSON.parse(localStorage.getItem('user'));
@@ -38,18 +38,17 @@ const AuthProvider = ({ children }) => {
     setUsername(null);
   };
 
-  const values = useMemo(() => ({
-    username,
-    getAuthHeader,
-    login,
-    logout,
-  }), [username]);
-
-  return (
-    <AuthContext.Provider value={values}>
-      {children}
-    </AuthContext.Provider>
+  const values = useMemo(
+    () => ({
+      getAuthHeader,
+      login,
+      logout,
+      username,
+    }),
+    [username]
   );
+
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 
 const PrivateOutlet = () => {

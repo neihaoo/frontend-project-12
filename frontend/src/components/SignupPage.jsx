@@ -1,19 +1,19 @@
-import axios from 'axios';
-import { useFormik } from 'formik';
-import { object, string } from 'yup';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useEffect, useRef, useState } from 'react';
 import {
   Button,
   Card,
+  Col,
+  Container,
   Form,
   Image,
-  Container,
   Row,
-  Col,
 } from 'react-bootstrap';
+import { object, string } from 'yup';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import routes from '../routes';
 import { useAuth } from '../hooks';
@@ -28,16 +28,12 @@ const SignupPage = () => {
   const [singupFailed, setSingupFailed] = useState(false);
 
   const validationSchema = object({
-    username: string()
-      .trim()
-      .required()
-      .min(3)
-      .max(20),
+    username: string().trim().required().min(3).max(20),
     password: string().trim().required().min(6),
     confirmPassword: string().test(
       'confirmPassword',
       'signup.match',
-      (value, context) => value === context.parent.password,
+      (value, context) => value === context.parent.password
     ),
   });
 
@@ -49,11 +45,14 @@ const SignupPage = () => {
     },
     validationSchema,
     validateOnChange: false,
-    onSubmit: async ({ username, password }) => {
+    onSubmit: async ({ password, username }) => {
       setSingupFailed(false);
 
       try {
-        const { data } = await axios.post(routes.signupPath(), { username, password });
+        const { data } = await axios.post(routes.signupPath(), {
+          password,
+          username,
+        });
 
         login(data);
         navigate(routes.chatPagePath());
@@ -82,42 +81,74 @@ const SignupPage = () => {
         <Col xs="12" md="8" xxl="6">
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
-              <Col className="d-flex align-items-center justify-content-center" xs="12" md="6">
-                <Image src={singupImage} alt={t('signup.title')} roundedCircle />
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                xs="12"
+                md="6"
+              >
+                <Image
+                  src={singupImage}
+                  alt={t('signup.title')}
+                  roundedCircle
+                />
               </Col>
-              <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
+              <Form
+                className="col-12 col-md-6 mt-3 mt-mb-0"
+                onSubmit={formik.handleSubmit}
+              >
                 <h1 className="text-center mb-4">{t('signup.title')}</h1>
-                <Form.FloatingLabel className="mb-3" label={t('signup.username')}>
+                <Form.FloatingLabel
+                  className="mb-3"
+                  label={t('signup.username')}
+                >
                   <Form.Control
                     name="username"
                     autocomplete="username"
                     placeholder={t('signup.username')}
                     value={formik.values.username}
-                    isInvalid={(formik.errors.username && formik.touched.username) || singupFailed}
+                    isInvalid={
+                      (formik.errors.username && formik.touched.username) ||
+                      singupFailed
+                    }
                     onChange={formik.handleChange}
                     ref={input}
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {t(formik.errors.username?.key, formik.errors.username?.values)}
+                    {t(
+                      formik.errors.username?.key,
+                      formik.errors.username?.values
+                    )}
                   </Form.Control.Feedback>
                 </Form.FloatingLabel>
-                <Form.FloatingLabel className="mb-3" label={t('signup.password')}>
+                <Form.FloatingLabel
+                  className="mb-3"
+                  label={t('signup.password')}
+                >
                   <Form.Control
                     type="password"
                     name="password"
                     autocomplete="new-password"
                     placeholder={t('signup.password')}
                     value={formik.values.password}
-                    isInvalid={(formik.errors.password && formik.touched.password) || singupFailed}
+                    isInvalid={
+                      (formik.errors.password && formik.touched.password) ||
+                      singupFailed
+                    }
                     onChange={formik.handleChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {t(formik.errors.password?.key, formik.errors.password?.values)}
+                    {t(
+                      formik.errors.password?.key,
+                      formik.errors.password?.values
+                    )}
                   </Form.Control.Feedback>
                 </Form.FloatingLabel>
-                <Form.FloatingLabel className="mb-3" label={t('signup.confirm')}>
+                <Form.FloatingLabel
+                  className="mb-3"
+                  label={t('signup.confirm')}
+                >
                   <Form.Control
                     type="password"
                     name="confirmPassword"
@@ -125,17 +156,26 @@ const SignupPage = () => {
                     placeholder={t('signup.confirm')}
                     value={formik.values.confirmPassword}
                     isInvalid={
-                      (formik.errors.confirmPassword && formik.touched.confirmPassword)
-                      || singupFailed
+                      (formik.errors.confirmPassword &&
+                        formik.touched.confirmPassword) ||
+                      singupFailed
                     }
                     onChange={formik.handleChange}
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {singupFailed ? t('signup.exists') : t(formik.errors.confirmPassword)}
+                    {singupFailed
+                      ? t('signup.exists')
+                      : t(formik.errors.confirmPassword)}
                   </Form.Control.Feedback>
                 </Form.FloatingLabel>
-                <Button className="w-100 mb-3" variant="outline-primary" type="submit">{t('signup.submit')}</Button>
+                <Button
+                  className="w-100 mb-3"
+                  variant="outline-primary"
+                  type="submit"
+                >
+                  {t('signup.submit')}
+                </Button>
               </Form>
             </Card.Body>
           </Card>

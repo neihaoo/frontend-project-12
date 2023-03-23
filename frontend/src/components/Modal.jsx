@@ -1,24 +1,19 @@
-import { useFormik } from 'formik';
+import { Modal as BootstrapModal, Button, Form } from 'react-bootstrap';
 import { object, string } from 'yup';
-import { toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';
-import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Form, Modal as BootstrapModal } from 'react-bootstrap';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 
-import { useApi } from '../hooks';
+import { actions, selectors } from '../slices';
 import { selectChannelsNames } from '../selectors';
-import { actions as modalActions } from '../slices/modal';
-import { actions as channelsActions, selectors as channelsSelectors } from '../slices/channels';
+import { useApi } from '../hooks';
 
-const getValidationSchema = (channels) => object({
-  name: string()
-    .trim()
-    .required()
-    .min(3)
-    .max(20)
-    .notOneOf(channels),
-});
+const getValidationSchema = (channels) =>
+  object({
+    name: string().trim().required().min(3).max(20).notOneOf(channels),
+  });
 
 const AddChannelForm = ({ handleClose }) => {
   const input = useRef();
@@ -37,7 +32,7 @@ const AddChannelForm = ({ handleClose }) => {
       try {
         const { id } = await addChannel({ name });
 
-        dispatch(channelsActions.setCurrentChannel({ channelId: id }));
+        dispatch(actions.setCurrentChannel({ channelId: id }));
         toast.success(t('channels.created'));
         handleClose();
       } catch (error) {
@@ -180,7 +175,9 @@ const RenameChannelForm = ({ handleClose }) => {
   const { renameChannel } = useApi();
   const channels = useSelector(selectChannelsNames);
   const { channelId } = useSelector((state) => state.modal.extra);
-  const channel = useSelector((state) => channelsSelectors.selectById(state, channelId));
+  const channel = useSelector((state) =>
+    selectors.channelsSelectors.selectById(state, channelId)
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -190,7 +187,7 @@ const RenameChannelForm = ({ handleClose }) => {
     validateOnChange: false,
     onSubmit: async ({ name }, { setSubmitting }) => {
       try {
-        await renameChannel({ name, id: channelId });
+        await renameChannel({ id: channelId, name });
 
         toast.success(t('channels.renamed'));
         handleClose();
@@ -210,7 +207,7 @@ const RenameChannelForm = ({ handleClose }) => {
   });
 
   useEffect(() => {
-    setTimeout(() => input.current.select());
+    input.current.select();
   }, []);
 
   return (
@@ -275,7 +272,7 @@ const Modal = () => {
   const { isOpened, type } = useSelector((state) => state.modal);
 
   const handleClose = () => {
-    dispatch(modalActions.closeModal());
+    dispatch(actions.closeModal());
   };
 
   const Component = mapping[type];

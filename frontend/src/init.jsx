@@ -1,52 +1,55 @@
-import i18next from 'i18next';
-import { setLocale } from 'yup';
-import { Provider } from 'react-redux';
-import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
+import { ErrorBoundary, Provider as RollbarProvider } from '@rollbar/react';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { configureStore } from '@reduxjs/toolkit';
+import i18next from 'i18next';
+import { Provider } from 'react-redux';
+import { setLocale } from 'yup';
 
-import store from './slices';
-import resources from './locales';
 import App from './components/App';
+
+import reducer, { actions } from './slices';
 import { ApiContext } from './contexts';
-import { actions as messagesActions } from './slices/messages';
-import { actions as channelsActions } from './slices/channels';
+import resources from './locales';
 
 const init = async (socket) => {
   const isProduction = process.env.NODE_ENV === 'production';
 
-  const withAcknowledgement = (event) => (args) => new Promise((resolve, reject) => {
-    socket.timeout(5000).volatile.emit(event, args, (error, response) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(response.data);
-      }
+  const withAcknowledgement = (event) => (args) =>
+    new Promise((resolve, reject) => {
+      socket.timeout(5000).volatile.emit(event, args, (error, response) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(response.data);
+        }
+      });
     });
-  });
 
   const api = {
-    sendMessage: withAcknowledgement('newMessage'),
     addChannel: withAcknowledgement('newChannel'),
-    renameChannel: withAcknowledgement('renameChannel'),
     removeChannel: withAcknowledgement('removeChannel'),
+    renameChannel: withAcknowledgement('renameChannel'),
+    sendMessage: withAcknowledgement('newMessage'),
   };
 
+  const store = configureStore({
+    reducer,
+  });
+
   const rollbarConfig = {
-    enabled: isProduction,
     accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
-    environment: process.env.NODE_ENV,
     captureUncaught: true,
     captureUnhandledRejections: true,
+    enabled: isProduction,
+    environment: process.env.NODE_ENV,
   };
 
   const i18nextInstance = i18next.createInstance();
 
-  await i18nextInstance
-    .use(initReactI18next)
-    .init({
-      lng: 'ru',
-      resources,
-    });
+  await i18nextInstance.use(initReactI18next).init({
+    lng: 'ru',
+    resources,
+  });
 
   setLocale({
     mixed: {
@@ -54,25 +57,27 @@ const init = async (socket) => {
       required: 'errors.required',
     },
     string: {
-      min: ({ min }) => ({ key: 'errors.min', values: { min } }),
       max: ({ max }) => ({ key: 'errors.max', values: { max } }),
+      min: ({ min }) => ({ key: 'errors.min', values: { min } }),
     },
   });
 
   socket.on('newMessage', (payload) => {
-    store.dispatch(messagesActions.addMessage(payload));
+    store.dispatch(actions.addMessage(payload));
   });
   socket.on('newChannel', (payload) => {
-    store.dispatch(channelsActions.addChannel(payload));
+    store.dispatch(actions.addChannel(payload));
   });
   socket.on('removeChannel', ({ id }) => {
-    store.dispatch(channelsActions.removeChannel(id));
+    store.dispatch(actions.removeChannel(id));
   });
   socket.on('renameChannel', ({ id, name }) => {
-    store.dispatch(channelsActions.renameChannel({
-      id,
-      changes: { name },
-    }));
+    store.dispatch(
+      actions.renameChannel({
+        changes: { name },
+        id,
+      })
+    );
   });
 
   return (

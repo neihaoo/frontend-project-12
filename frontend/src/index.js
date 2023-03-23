@@ -1,6 +1,6 @@
-import { StrictMode } from 'react';
-import { io } from 'socket.io-client';
 import { createRoot } from 'react-dom';
+import { io } from 'socket.io-client';
+import { StrictMode } from 'react';
 
 import init from './init';
 

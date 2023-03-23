@@ -1,22 +1,23 @@
-import filter from 'leo-profanity';
-import { useFormik } from 'formik';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 import { object, string } from 'yup';
-import { toast } from 'react-toastify';
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { animateScroll } from 'react-scroll';
-import { useTranslation } from 'react-i18next';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
-import { Button, InputGroup, Form } from 'react-bootstrap';
+import filter from 'leo-profanity';
+import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
+import {
+  selectCurrentChannel,
+  selectCurrentChannelMessages,
+} from '../selectors';
 import { useApi, useAuth } from '../hooks';
-import { selectCurrentChannel, selectCurrentChannelMessages } from '../selectors';
 
 const Message = ({ username, body }) => (
   <div className="text-break mb-2">
-    <b>{username}</b>
-    {' '}
-    {body}
+    <b>{username}</b> {body}
   </div>
 );
 
@@ -38,8 +39,8 @@ const Chat = () => {
     validationSchema,
     onSubmit: async ({ body }, { resetForm, setSubmitting }) => {
       const message = {
-        channelId: channel.id,
         body,
+        channelId: channel.id,
         username,
       };
 
@@ -67,30 +68,41 @@ const Chat = () => {
 
   useEffect(() => {
     input.current.focus();
-    animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
+    animateScroll.scrollToBottom({
+      containerId: 'messages-box',
+      delay: 0,
+      duration: 0,
+    });
   }, [channel, messages.length]);
 
   return (
     <div className="d-flex flex-column h-100">
       <div className="bg-light mb-4 p-3 shadow-sm small">
         <p className="m-0">
-          <b>
-            #
-            {' '}
-            {channel?.name}
-          </b>
+          <b># {channel?.name}</b>
         </p>
-        <span className="text-muted">
-          {`${messages.length} ${t('chat.messageCount', { count: messages.length })}`}
-        </span>
+        <span className="text-muted">{`${messages.length} ${t(
+          'chat.messageCount',
+          {
+            count: messages.length,
+          }
+        )}`}</span>
       </div>
       <div id="messages-box" className="chat-messages overflow-auto px-5">
         {messages.map((message) => (
-          <Message key={message.id} username={message.username} body={filter.clean(message.body)} />
+          <Message
+            key={message.id}
+            username={message.username}
+            body={filter.clean(message.body)}
+          />
         ))}
       </div>
       <div className="mt-auto px-5 py-3">
-        <Form className="py-1 border rounded-2" noValidate onSubmit={formik.handleSubmit}>
+        <Form
+          className="py-1 border rounded-2"
+          noValidate
+          onSubmit={formik.handleSubmit}
+        >
           <InputGroup hasValidation={isInvalid}>
             <Form.Control
               ref={input}
@@ -102,7 +114,12 @@ const Chat = () => {
               onChange={formik.handleChange}
               placeholder={t('chat.enterMessage')}
             />
-            <Button className="border-0" variant="group-vertical" type="submit" disabled={isInvalid}>
+            <Button
+              className="border-0"
+              variant="group-vertical"
+              type="submit"
+              disabled={isInvalid}
+            >
               <ArrowRightSquare size={20} />
               <span className="visually-hidden">{t('chat.send')}</span>
             </Button>

@@ -14,8 +14,9 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(channelsActions.removeChannel, (state, { payload }) => {
-        const restMessages = Object.values(state.entities)
-          .filter(({ channelId }) => channelId !== payload);
+        const restMessages = Object.values(state.entities).filter(
+          ({ channelId }) => channelId !== payload
+        );
 
         adapter.setAll(state, restMessages);
       })
@@ -28,7 +29,9 @@ const slice = createSlice({
   },
 });
 
-export const selectors = adapter.getSelectors((state) => state.messages);
-export const { actions } = slice;
+const selectors = adapter.getSelectors((state) => state.messages);
+const { actions } = slice;
+
+export { actions, selectors };
 
 export default slice.reducer;

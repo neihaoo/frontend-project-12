@@ -1,19 +1,19 @@
-import axios from 'axios';
-import { useFormik } from 'formik';
-import { object, string } from 'yup';
-import { toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import {
   Button,
   Card,
+  Col,
+  Container,
   Form,
   Image,
-  Container,
   Row,
-  Col,
 } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { object, string } from 'yup';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 import routes from '../routes';
 import { useAuth } from '../hooks';
@@ -28,14 +28,14 @@ const LoginPage = () => {
   const [isInvalid, setIsInvalid] = useState(false);
 
   const validationSchema = object({
-    username: string().trim().required(),
     password: string().trim().required(),
+    username: string().trim().required(),
   });
 
   const formik = useFormik({
     initialValues: {
-      username: '',
       password: '',
+      username: '',
     },
     validationSchema,
     validateOnChange: false,
@@ -72,12 +72,22 @@ const LoginPage = () => {
         <Col xs="12" md="8" xxl="6">
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
-              <Col className="d-flex align-items-center justify-content-center" xs="12" md="6">
+              <Col
+                className="d-flex align-items-center justify-content-center"
+                xs="12"
+                md="6"
+              >
                 <Image src={loginImage} alt={t('login.title')} roundedCircle />
               </Col>
-              <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
+              <Form
+                className="col-12 col-md-6 mt-3 mt-mb-0"
+                onSubmit={formik.handleSubmit}
+              >
                 <h1 className="text-center mb-4">{t('login.title')}</h1>
-                <Form.FloatingLabel className="mb-3" label={t('login.username')}>
+                <Form.FloatingLabel
+                  className="mb-3"
+                  label={t('login.username')}
+                >
                   <Form.Control
                     name="username"
                     autocomplete="username"
@@ -89,7 +99,10 @@ const LoginPage = () => {
                     required
                   />
                 </Form.FloatingLabel>
-                <Form.FloatingLabel className="mb-3" label={t('login.password')}>
+                <Form.FloatingLabel
+                  className="mb-3"
+                  label={t('login.password')}
+                >
                   <Form.Control
                     name="password"
                     autocomplete="current-password"
@@ -100,15 +113,24 @@ const LoginPage = () => {
                     onChange={formik.handleChange}
                     required
                   />
-                  {isInvalid && <Form.Control.Feedback type="invalid" tooltip>{t('login.auth')}</Form.Control.Feedback>}
+                  {isInvalid && (
+                    <Form.Control.Feedback type="invalid" tooltip>
+                      {t('login.auth')}
+                    </Form.Control.Feedback>
+                  )}
                 </Form.FloatingLabel>
-                <Button className="w-100 mb-3" variant="outline-primary" type="submit">{t('login.submit')}</Button>
+                <Button
+                  className="w-100 mb-3"
+                  variant="outline-primary"
+                  type="submit"
+                >
+                  {t('login.submit')}
+                </Button>
               </Form>
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>{t('login.newToChat')}</span>
-                {' '}
+                <span>{t('login.newToChat')}</span>{' '}
                 <Link to="/signup">{t('login.signup')}</Link>
               </div>
             </Card.Footer>

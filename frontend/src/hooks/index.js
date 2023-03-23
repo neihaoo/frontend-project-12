@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import { ApiContext, AuthContext } from '../contexts';
 
-export const useAuth = () => useContext(AuthContext);
+const useAuth = () => useContext(AuthContext);
+const useApi = () => useContext(ApiContext);
 
-export const useApi = () => useContext(ApiContext);
+export { useApi, useAuth };

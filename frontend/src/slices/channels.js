@@ -1,26 +1,18 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
-const adapter = createEntityAdapter();
-const initialState = adapter.getInitialState({ currentChannelId: null });
+const defaultChannelId = 1;
 
-export const defaultChannelId = 1;
+const adapter = createEntityAdapter();
+const initialState = adapter.getInitialState({
+  currentChannelId: null,
+  error: null,
+  loadingStatus: 'idle',
+});
 
 const slice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
-    setInitialState: (state, { payload }) => {
-      const { channels, currentChannelId } = payload;
-
-      state.ids = channels.ids;
-      state.entities = channels.entities;
-      state.currentChannelId = currentChannelId;
-    },
-    setCurrentChannel: (state, { payload }) => {
-      const { channelId } = payload;
-
-      state.currentChannelId = channelId;
-    },
     addChannel: adapter.addOne,
     removeChannel: (state, { payload }) => {
       if (state.currentChannelId === payload) {
@@ -30,10 +22,24 @@ const slice = createSlice({
       adapter.removeOne(state, payload);
     },
     renameChannel: adapter.updateOne,
+    setCurrentChannel: (state, { payload }) => {
+      const { channelId } = payload;
+
+      state.currentChannelId = channelId;
+    },
+    setInitialState: (state, { payload }) => {
+      const { channels, currentChannelId } = payload;
+
+      state.ids = channels.ids;
+      state.entities = channels.entities;
+      state.currentChannelId = currentChannelId;
+    },
   },
 });
 
-export const selectors = adapter.getSelectors((state) => state.channels);
-export const { actions } = slice;
+const selectors = adapter.getSelectors((state) => state.channels);
+const { actions } = slice;
+
+export { actions, defaultChannelId, selectors };
 
 export default slice.reducer;
