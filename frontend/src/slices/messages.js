@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
 import { actions as channelsActions } from './channels.js';
@@ -25,8 +23,7 @@ const slice = createSlice({
       .addCase(channelsActions.setInitialState, (state, { payload }) => {
         const { messages } = payload;
 
-        state.ids = messages.ids;
-        state.entities = messages.entities;
+        adapter.addMany(state, messages);
       });
   },
 });

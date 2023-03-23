@@ -12,8 +12,8 @@ import { useTranslation } from 'react-i18next';
 import {
   selectCurrentChannel,
   selectCurrentChannelMessages,
-} from '../selectors';
-import { useApi, useAuth } from '../hooks';
+} from '../../selectors';
+import { useApi, useAuth } from '../../hooks';
 
 const Message = ({ username, body }) => (
   <div className="text-break mb-2">

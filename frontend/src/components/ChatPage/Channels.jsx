@@ -10,7 +10,7 @@ import { PlusSquare } from 'react-bootstrap-icons';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { actions, defaultChannelId, selectors } from '../slices';
+import { actions, defaultChannelId, selectors } from '../../slices';
 
 const Channel = ({
   channel,

@@ -12,12 +12,11 @@ import { useTranslation } from 'react-i18next';
 
 import Channels from './Channels';
 import Chat from './Chat';
-import Modal from './Modal';
+import Modal from '../Modal';
 
-import { actions } from '../slices';
-import { normalizeData } from '../utils';
-import routes from '../routes';
-import { useAuth } from '../hooks';
+import { actions } from '../../slices';
+import routes from '../../routes';
+import { useAuth } from '../../hooks';
 
 const ChatPage = () => {
   const { t } = useTranslation();
@@ -32,13 +31,7 @@ const ChatPage = () => {
           headers: getAuthHeader(),
         });
 
-        const { currentChannelId } = data;
-        const channels = normalizeData(data.channels);
-        const messages = normalizeData(data.messages);
-
-        dispatch(
-          actions.setInitialState({ channels, messages, currentChannelId }),
-        );
+        dispatch(actions.setInitialState(data));
       } catch (error) {
         if (error.isAxiosError) {
           toast.error(t('errors.network'));

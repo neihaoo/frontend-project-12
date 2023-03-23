@@ -9,8 +9,17 @@ import App from './components/App';
 
 import reducer, { actions } from './slices';
 import { ApiContext } from './contexts';
-import { getTranslation } from './utils';
 import resources from './locales';
+
+const getTranslation = (field) => {
+  const mapping = {
+    name: 'modals.constraints',
+    password: 'signup.passwordConstraints',
+    username: 'signup.usernameConstraints',
+  };
+
+  return mapping[field];
+};
 
 const init = async (socket) => {
   const isProduction = process.env.NODE_ENV === 'production';
