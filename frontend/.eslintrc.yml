@@ -23,7 +23,6 @@ plugins:
 
 rules:
   sort-imports: ["error", { "allowSeparatedGroups": true, "ignoreCase": true }]
-  no-param-reassign: 0
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
   no-console: 0
   import/extensions: 0

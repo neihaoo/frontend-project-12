@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
 const defaultChannelId = 1;
