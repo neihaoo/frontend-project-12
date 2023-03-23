@@ -86,6 +86,7 @@ const LoginPage = () => {
                 <h1 className="text-center mb-4">{t('login.title')}</h1>
                 <Form.FloatingLabel
                   className="mb-3"
+                  controlId="username"
                   label={t('login.username')}
                 >
                   <Form.Control
@@ -101,6 +102,7 @@ const LoginPage = () => {
                 </Form.FloatingLabel>
                 <Form.FloatingLabel
                   className="mb-3"
+                  controlId="password"
                   label={t('login.password')}
                 >
                   <Form.Control

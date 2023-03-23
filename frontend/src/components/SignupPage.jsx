@@ -25,7 +25,7 @@ const SignupPage = () => {
   const { login } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [singupFailed, setSingupFailed] = useState(false);
+  const [signupFailed, setSignupFailed] = useState(false);
 
   const validationSchema = object({
     username: string().trim().required().min(3).max(20),
@@ -44,8 +44,9 @@ const SignupPage = () => {
       confirmPassword: '',
     },
     validationSchema,
+    validateOnChange: false,
     onSubmit: async ({ password, username }) => {
-      setSingupFailed(false);
+      setSignupFailed(false);
 
       try {
         const { data } = await axios.post(routes.signupPath(), {
@@ -57,7 +58,7 @@ const SignupPage = () => {
         navigate(routes.chatPagePath());
       } catch (error) {
         if (error.response.status === 409) {
-          setSingupFailed(true);
+          setSignupFailed(true);
         } else if (error.isAxiosError) {
           toast.error(t('errors.network'));
         } else {
@@ -98,6 +99,7 @@ const SignupPage = () => {
                 <h1 className="text-center mb-4">{t('signup.title')}</h1>
                 <Form.FloatingLabel
                   className="mb-3"
+                  controlId="username"
                   label={t('signup.username')}
                 >
                   <Form.Control
@@ -107,10 +109,9 @@ const SignupPage = () => {
                     value={formik.values.username}
                     isInvalid={
                       (formik.errors.username && formik.touched.username) ||
-                      singupFailed
+                      signupFailed
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                     ref={input}
                     required
                   />
@@ -120,6 +121,7 @@ const SignupPage = () => {
                 </Form.FloatingLabel>
                 <Form.FloatingLabel
                   className="mb-3"
+                  controlId="password"
                   label={t('signup.password')}
                 >
                   <Form.Control
@@ -130,10 +132,9 @@ const SignupPage = () => {
                     value={formik.values.password}
                     isInvalid={
                       (formik.errors.password && formik.touched.password) ||
-                      singupFailed
+                      signupFailed
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
@@ -142,6 +143,7 @@ const SignupPage = () => {
                 </Form.FloatingLabel>
                 <Form.FloatingLabel
                   className="mb-3"
+                  controlId="confirmPassword"
                   label={t('signup.confirm')}
                 >
                   <Form.Control
@@ -153,14 +155,13 @@ const SignupPage = () => {
                     isInvalid={
                       (formik.errors.confirmPassword &&
                         formik.touched.confirmPassword) ||
-                      singupFailed
+                      signupFailed
                     }
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                     required
                   />
                   <Form.Control.Feedback type="invalid" tooltip>
-                    {singupFailed
+                    {signupFailed
                       ? t('signup.exists')
                       : t(formik.errors.confirmPassword)}
                   </Form.Control.Feedback>
