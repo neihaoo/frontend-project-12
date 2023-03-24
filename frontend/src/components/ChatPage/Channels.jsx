@@ -82,13 +82,13 @@ const Channels = () => {
 
   const handleRemoveChannel = (channelId) => () => {
     dispatch(
-      actions.openModal({ extra: { channelId }, type: 'removeChannel' }),
+      actions.openModal({ type: 'removeChannel', extra: { channelId } }),
     );
   };
 
   const handleRenameChannel = (channelId) => () => {
     dispatch(
-      actions.openModal({ extra: { channelId }, type: 'renameChannel' }),
+      actions.openModal({ type: 'renameChannel', extra: { channelId } }),
     );
   };
 
