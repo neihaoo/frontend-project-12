@@ -51,10 +51,10 @@ const Chat = () => {
 
         resetForm();
       } catch (error) {
-        if (error.isAxiosError) {
-          toast.error(t('errors.network'));
-        } else {
+        if (!error.isAxiosError) {
           toast.error(t('errors.unknown'));
+        } else {
+          toast.error(t('errors.network'));
         }
 
         throw error;
@@ -123,7 +123,7 @@ const Chat = () => {
               className="border-0"
               variant="group-vertical"
               type="submit"
-              disabled={isInvalid}
+              disabled={isInvalid || formik.isSubmitting}
             >
               <ArrowRightSquare size={20} />
               <span className="visually-hidden">{t('chat.send')}</span>

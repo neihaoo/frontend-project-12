@@ -33,10 +33,10 @@ const ChatPage = () => {
 
         dispatch(actions.setInitialState(data));
       } catch (error) {
-        if (error.isAxiosError) {
-          toast.error(t('errors.network'));
-        } else {
+        if (!error.isAxiosError) {
           toast.error(t('errors.unknown'));
+        } else {
+          toast.error(t('errors.network'));
         }
 
         throw error;

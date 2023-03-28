@@ -29,7 +29,7 @@ const LoginForm = () => {
     },
     validationSchema,
     validateOnChange: false,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setSubmitting }) => {
       setIsInvalid(false);
 
       try {
@@ -38,17 +38,19 @@ const LoginForm = () => {
         login(data);
         navigate(routes.chatPagePath());
       } catch (error) {
-        if (error.response.status === 401) {
-          setIsInvalid(true);
-        } else if (error.isAxiosError) {
-          toast.error(t('errors.network'));
-        } else {
+        if (!error.isAxiosError) {
           toast.error(t('errors.unknown'));
+        } else if (error.response.status === 401) {
+          setIsInvalid(true);
+        } else {
+          toast.error(t('errors.network'));
         }
 
         input.current.select();
         throw error;
       }
+
+      setSubmitting(false);
     },
   });
 
@@ -75,6 +77,7 @@ const LoginForm = () => {
           isInvalid={isInvalid}
           onChange={formik.handleChange}
           ref={input}
+          disabled={formik.isSubmitting}
           required
         />
       </Form.FloatingLabel>
@@ -91,6 +94,7 @@ const LoginForm = () => {
           value={formik.values.password}
           isInvalid={isInvalid}
           onChange={formik.handleChange}
+          disabled={formik.isSubmitting}
           required
         />
         {isInvalid && (
@@ -103,6 +107,7 @@ const LoginForm = () => {
         className="w-100 mb-3"
         variant="outline-primary"
         type="submit"
+        disabled={formik.isSubmitting}
       >
         {t('login.submit')}
       </Button>
