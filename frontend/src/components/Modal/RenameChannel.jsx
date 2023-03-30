@@ -35,7 +35,7 @@ const RenameChannel = ({ handleClose }) => {
     },
     validationSchema,
     validateOnChange: false,
-    onSubmit: async ({ name }, { setSubmitting }) => {
+    onSubmit: async ({ name }) => {
       try {
         await renameChannel({ id: channelId, name });
 
@@ -51,8 +51,6 @@ const RenameChannel = ({ handleClose }) => {
         input.current.select();
         throw error;
       }
-
-      setSubmitting(false);
     },
   });
 

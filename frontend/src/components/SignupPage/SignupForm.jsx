@@ -42,7 +42,7 @@ const SignupForm = () => {
     },
     validationSchema,
     validateOnChange: false,
-    onSubmit: async ({ password, username }, { setSubmitting }) => {
+    onSubmit: async ({ password, username }) => {
       setSignupFailed(false);
 
       try {
@@ -65,8 +65,6 @@ const SignupForm = () => {
         input.current.select();
         throw error;
       }
-
-      setSubmitting(false);
     },
   });
 

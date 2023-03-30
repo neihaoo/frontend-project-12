@@ -32,7 +32,7 @@ const AddChannel = ({ handleClose }) => {
     },
     validationSchema,
     validateOnChange: false,
-    onSubmit: async ({ name }, { setSubmitting }) => {
+    onSubmit: async ({ name }) => {
       try {
         const { id } = await addChannel({ name });
 
@@ -49,8 +49,6 @@ const AddChannel = ({ handleClose }) => {
         input.current.select();
         throw error;
       }
-
-      setSubmitting(false);
     },
   });
 

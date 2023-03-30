@@ -39,7 +39,7 @@ const Chat = () => {
   const formik = useFormik({
     initialValues: { body: '' },
     validationSchema,
-    onSubmit: async ({ body }, { resetForm, setSubmitting }) => {
+    onSubmit: async ({ body }, { resetForm }) => {
       const message = {
         body,
         channelId: channel.id,
@@ -59,8 +59,6 @@ const Chat = () => {
 
         throw error;
       }
-
-      setSubmitting(false);
     },
   });
 

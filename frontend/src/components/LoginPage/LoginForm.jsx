@@ -29,7 +29,7 @@ const LoginForm = () => {
     },
     validationSchema,
     validateOnChange: false,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values) => {
       setIsInvalid(false);
 
       try {
@@ -49,8 +49,6 @@ const LoginForm = () => {
         input.current.select();
         throw error;
       }
-
-      setSubmitting(false);
     },
   });
 
