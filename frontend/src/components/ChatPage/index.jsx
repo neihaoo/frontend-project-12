@@ -21,7 +21,7 @@ import { useAuth } from '../../hooks';
 const ChatPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { getAuthHeader } = useAuth();
+  const { getAuthHeader, logout } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,6 +35,8 @@ const ChatPage = () => {
       } catch (error) {
         if (!error.isAxiosError) {
           toast.error(t('errors.unknown'));
+        } else if (error.response.status === 401) {
+          logout();
         } else {
           toast.error(t('errors.network'));
         }
@@ -46,7 +48,7 @@ const ChatPage = () => {
     };
 
     fetchData();
-  }, [dispatch, getAuthHeader, t]);
+  }, [dispatch, getAuthHeader, logout, t]);
 
   return loading ? (
     <div className="h-100 d-flex justify-content-center align-items-center">
